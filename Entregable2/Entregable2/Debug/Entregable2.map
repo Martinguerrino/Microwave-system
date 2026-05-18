@@ -292,7 +292,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0xb74
+.text           0x00000000      0xbc0
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -450,31 +450,34 @@ END GROUP
                 0x000008ca       0xee microwave.o
                 0x000008ca                Handle_ESTADO_COCINANDO
  .text.Handle_ESTADO_PAUSADO
-                0x000009b8       0x58 microwave.o
+                0x000009b8       0x72 microwave.o
                 0x000009b8                Handle_ESTADO_PAUSADO
+ .text.Handle_ESTADO_ABIERTO
+                0x00000a2a       0x2a microwave.o
+                0x00000a2a                Handle_ESTADO_ABIERTO
  .text.Handle_ESTADO_FINALIZADO
-                0x00000a10       0x96 microwave.o
-                0x00000a10                Handle_ESTADO_FINALIZADO
+                0x00000a54       0x96 microwave.o
+                0x00000a54                Handle_ESTADO_FINALIZADO
  .text.MEF_update
-                0x00000aa6       0x3c microwave.o
-                0x00000aa6                MEF_update
+                0x00000aea       0x44 microwave.o
+                0x00000aea                MEF_update
  .text.MW_update
-                0x00000ae2       0x28 microwave.o
-                0x00000ae2                MW_update
+                0x00000b2e       0x28 microwave.o
+                0x00000b2e                MW_update
  .text.TIMER1_Init
-                0x00000b0a       0x2a timer.o
-                0x00000b0a                TIMER1_Init
+                0x00000b56       0x2a timer.o
+                0x00000b56                TIMER1_Init
  .text.__vector_11
-                0x00000b34       0x1e timer.o
-                0x00000b34                __vector_11
+                0x00000b80       0x1e timer.o
+                0x00000b80                __vector_11
  .text.libgcc.mul
-                0x00000b52       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
-                0x00000b52                __umulhisi3
-                0x00000b70                . = ALIGN (0x2)
+                0x00000b9e       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                0x00000b9e                __umulhisi3
+                0x00000bbc                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000b70        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000b70                _exit
-                0x00000b70                exit
+ .fini9         0x00000bbc        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000bbc                _exit
+                0x00000bbc                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -493,11 +496,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000b70        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000bbc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000b74                _etext = .
+                0x00000bc0                _etext = .
 
-.data           0x00800100       0x68 load address 0x00000b74
+.data           0x00800100       0x68 load address 0x00000bc0
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -543,8 +546,8 @@ END GROUP
                 0x00800171                flag_un_segundo
  *(COMMON)
                 0x00800172                PROVIDE (__bss_end, .)
-                0x00000b74                __data_load_start = LOADADDR (.data)
-                0x00000bdc                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000bc0                __data_load_start = LOADADDR (.data)
+                0x00000c28                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800172        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -621,7 +624,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x208
+.debug_aranges  0x00000000      0x210
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x50 actuators.o
@@ -634,14 +637,14 @@ END GROUP
  .debug_aranges
                 0x00000160       0x28 main.o
  .debug_aranges
-                0x00000188       0x58 microwave.o
+                0x00000188       0x60 microwave.o
  .debug_aranges
-                0x000001e0       0x28 timer.o
+                0x000001e8       0x28 timer.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1f2f
+.debug_info     0x00000000     0x1ffa
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x123 actuators.o
@@ -649,10 +652,10 @@ END GROUP
  .debug_info    0x0000082d      0x1fc keypad.o
  .debug_info    0x00000a29      0xb3a lcd.o
  .debug_info    0x00001563      0x13f main.o
- .debug_info    0x000016a2      0x7d2 microwave.o
- .debug_info    0x00001e74       0xbb timer.o
+ .debug_info    0x000016a2      0x89d microwave.o
+ .debug_info    0x00001f3f       0xbb timer.o
 
-.debug_abbrev   0x00000000      0xcfd
+.debug_abbrev   0x00000000      0xd28
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_abbrev  0x000005a2       0x74 actuators.o
@@ -660,10 +663,10 @@ END GROUP
  .debug_abbrev  0x000006c2      0x15a keypad.o
  .debug_abbrev  0x0000081c      0x242 lcd.o
  .debug_abbrev  0x00000a5e       0x80 main.o
- .debug_abbrev  0x00000ade      0x19e microwave.o
- .debug_abbrev  0x00000c7c       0x81 timer.o
+ .debug_abbrev  0x00000ade      0x1c9 microwave.o
+ .debug_abbrev  0x00000ca7       0x81 timer.o
 
-.debug_line     0x00000000     0x1299
+.debug_line     0x00000000     0x12f8
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000134      0x140 actuators.o
@@ -671,20 +674,20 @@ END GROUP
  .debug_line    0x00000350      0x22f keypad.o
  .debug_line    0x0000057f      0x67b lcd.o
  .debug_line    0x00000bfa       0xc8 main.o
- .debug_line    0x00000cc2      0x503 microwave.o
- .debug_line    0x000011c5       0xd4 timer.o
+ .debug_line    0x00000cc2      0x562 microwave.o
+ .debug_line    0x00001224       0xd4 timer.o
 
-.debug_frame    0x00000000      0x45c
+.debug_frame    0x00000000      0x46c
  *(.debug_frame)
  .debug_frame   0x00000000       0x84 actuators.o
  .debug_frame   0x00000084       0x30 display.o
  .debug_frame   0x000000b4       0x50 keypad.o
  .debug_frame   0x00000104      0x21c lcd.o
  .debug_frame   0x00000320       0x34 main.o
- .debug_frame   0x00000354       0xc4 microwave.o
- .debug_frame   0x00000418       0x44 timer.o
+ .debug_frame   0x00000354       0xd4 microwave.o
+ .debug_frame   0x00000428       0x44 timer.o
 
-.debug_str      0x00000000      0x7b9
+.debug_str      0x00000000      0x7cf
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x1ba actuators.o
@@ -697,18 +700,18 @@ END GROUP
                                 0x37b (size before relaxing)
  .debug_str     0x00000623       0x32 main.o
                                 0x1e4 (size before relaxing)
- .debug_str     0x00000655      0x14b microwave.o
-                                0x3cd (size before relaxing)
- .debug_str     0x000007a0       0x19 timer.o
+ .debug_str     0x00000655      0x161 microwave.o
+                                0x3f2 (size before relaxing)
+ .debug_str     0x000007b6       0x19 timer.o
                                 0x1bc (size before relaxing)
 
-.debug_loc      0x00000000     0x169f
+.debug_loc      0x00000000     0x179b
  *(.debug_loc)
  .debug_loc     0x00000000       0x2f display.o
  .debug_loc     0x0000002f      0x146 keypad.o
  .debug_loc     0x00000175      0xd9c lcd.o
- .debug_loc     0x00000f11      0x752 microwave.o
- .debug_loc     0x00001663       0x3c timer.o
+ .debug_loc     0x00000f11      0x84e microwave.o
+ .debug_loc     0x0000175f       0x3c timer.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -728,15 +731,15 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x198
+.debug_ranges   0x00000000      0x1a0
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x40 actuators.o
  .debug_ranges  0x00000040       0x10 display.o
  .debug_ranges  0x00000050       0x20 keypad.o
  .debug_ranges  0x00000070       0xb0 lcd.o
  .debug_ranges  0x00000120       0x18 main.o
- .debug_ranges  0x00000138       0x48 microwave.o
- .debug_ranges  0x00000180       0x18 timer.o
+ .debug_ranges  0x00000138       0x50 microwave.o
+ .debug_ranges  0x00000188       0x18 timer.o
 
 .debug_macro
  *(.debug_macro)

@@ -8,6 +8,7 @@ typedef enum {
     ESTADO_STANDBY,
     ESTADO_CONFIGURANDO,
     ESTADO_COCINANDO,
+    ESTADO_ABIERTO,
     ESTADO_PAUSADO,
     ESTADO_FINALIZADO
 } EstadoMicroondas;
@@ -16,6 +17,7 @@ typedef enum {
 EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla);
 EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual);
 EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual);
+EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla);
 EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla);
 EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla);
 

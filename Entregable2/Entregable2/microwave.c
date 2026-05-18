@@ -174,12 +174,12 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
             Mostrar_Tiempo_LCD();
         }
         else if (tecla == 'D') {
-            // Abrir puerta
+            // Abrir puerta -> mostrar mensaje y pasar a ESTADO_ABIERTO
             Magnetron_Off();
             InteriorLight_Off();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Puerta Abierta! ", 16);
-            return ESTADO_PAUSADO;
+            return ESTADO_ABIERTO;
         }
     }
     return ESTADO_COCINANDO;
@@ -196,6 +196,12 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
             LCDstring((uint8_t*)"Cocinando...    ", 16);
             return ESTADO_COCINANDO;
         } 
+        else if (tecla == 'D') {
+            // Cerrar puerta: quitar el letrero de puerta abierta
+            LCDGotoXY(0, 1);
+            LCDstring((uint8_t*)"                ", 16);
+            return ESTADO_PAUSADO;
+        }
         else if (tecla == 'B') {
             // Volver a ESTADO_STANDBY
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
@@ -206,6 +212,22 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
         }
     }
     return ESTADO_PAUSADO;
+}
+
+// Manejador para ESTADO_ABIERTO
+EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
+    // Mantener la primera línea (tiempo) y mostrar "Puerta Abierta!" en la segunda
+    if (presiono) {
+        if (tecla == 'D') {
+            // Quitar el mensaje y pasar a configurando sin alterar el tiempo
+            LCDGotoXY(0, 1);
+            LCDstring((uint8_t*)"                ", 16);
+            // Actualizar la primera línea para reflejar el tiempo actual
+            Mostrar_Tiempo_LCD();
+            return ESTADO_CONFIGURANDO;
+        }
+    }
+    return ESTADO_ABIERTO;
 }
 
 // Manejador para ESTADO_FINALIZADO
@@ -260,6 +282,9 @@ EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas es
 
         case ESTADO_PAUSADO:
             return Handle_ESTADO_PAUSADO(presiono, tecla);
+
+        case ESTADO_ABIERTO:
+            return Handle_ESTADO_ABIERTO(presiono, tecla);
 
         case ESTADO_FINALIZADO:
             return Handle_ESTADO_FINALIZADO(presiono, tecla);
