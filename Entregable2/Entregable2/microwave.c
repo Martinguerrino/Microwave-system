@@ -13,17 +13,17 @@
 
 #define MAX_SEGUNDOS 5999
 
-// Variables de estado (definidas aquí, ya no en main.c)
+
 uint8_t digitos[4] = {0, 0, 0, 0};
 uint16_t total_segundos = 0;
 uint8_t contador_finalizado = 0;
 uint8_t visible_finalizado = 1;
 uint8_t cantidad_digitos = 0;
 
-// Estado interno de la MEF (encapsulado en este módulo)
+
 static EstadoMicroondas estado_actual = ESTADO_STANDBY;
 
-// Función auxiliar
+
 void Actualizar_Digitos_Desde_Segundos(void) {
     uint8_t min_act = total_segundos / 60;
     uint8_t seg_act = total_segundos % 60;
@@ -31,6 +31,15 @@ void Actualizar_Digitos_Desde_Segundos(void) {
     digitos[1] = min_act % 10;
     digitos[2] = seg_act / 10;
     digitos[3] = seg_act % 10;
+}
+
+// Acción al abrir la puerta
+static void Abrio(void)
+{
+    Magnetron_Off();
+    InteriorLight_Off();
+    LCDGotoXY(0, 1);
+    LCDstring((uint8_t*)"Puerta Abierta! ", 16);
 }
 
 // Manejador para ESTADO_STANDBY
@@ -162,7 +171,6 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
             return ESTADO_PAUSADO;
         }
         else if (tecla == 'C') {
-            // Sumar 30 segundos
             total_segundos += 30;
             
             // APLICAMOS EL TECHO MATEMÁTICO AL SUMAR TIEMPO EN CALIENTE
@@ -175,10 +183,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         }
         else if (tecla == 'D') {
             // Abrir puerta -> mostrar mensaje y pasar a ESTADO_ABIERTO
-            Magnetron_Off();
-            InteriorLight_Off();
-            LCDGotoXY(0, 1);
-            LCDstring((uint8_t*)"Puerta Abierta! ", 16);
+            Abrio();
             return ESTADO_ABIERTO;
         }
     }
@@ -219,10 +224,8 @@ EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
     // Mantener la primera línea (tiempo) y mostrar "Puerta Abierta!" en la segunda
     if (presiono) {
         if (tecla == 'D') {
-            // Quitar el mensaje y pasar a configurando sin alterar el tiempo
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"                ", 16);
-            // Actualizar la primera línea para reflejar el tiempo actual
             Mostrar_Tiempo_LCD();
             return ESTADO_CONFIGURANDO;
         }
@@ -270,6 +273,11 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
 
 // Implementación de MEF_update: delega en los manejadores según estado
 EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
+    
+    if (presiono && tecla == 'D' && estado_actual != ESTADO_ABIERTO) {
+        Abrio();
+        return ESTADO_ABIERTO;
+    }
     switch (estado_actual) {
         case ESTADO_STANDBY:
             return Handle_ESTADO_STANDBY(presiono, tecla);

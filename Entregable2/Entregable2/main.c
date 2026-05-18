@@ -29,7 +29,7 @@ static void initialice(void)
 
 int main(void)
 {   
-    /* Inicializaci�n de Perif�ricos */
+    /* Inicializacion de Perifericos */
     initialice();
 
     /* Loop Principal */

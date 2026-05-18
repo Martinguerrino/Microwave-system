@@ -3,31 +3,31 @@ Entregable2.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000068  00800100  00000bc0  00000c54  2**0
+  0 .data         00000068  00800100  00000bda  00000c6e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000bc0  00000000  00000000  00000094  2**1
+  1 .text         00000bda  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000000a  00800168  00800168  00000cbc  2**0
+  2 .bss          0000000a  00800168  00800168  00000cd6  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000cbc  2**0
+  3 .comment      00000030  00000000  00000000  00000cd6  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000cec  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000d08  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000210  00000000  00000000  00000d2c  2**0
+  5 .debug_aranges 00000218  00000000  00000000  00000d48  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001ffa  00000000  00000000  00000f3c  2**0
+  6 .debug_info   00002026  00000000  00000000  00000f60  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000d28  00000000  00000000  00002f36  2**0
+  7 .debug_abbrev 00000d40  00000000  00000000  00002f86  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000012f8  00000000  00000000  00003c5e  2**0
+  8 .debug_line   00001336  00000000  00000000  00003cc6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000046c  00000000  00000000  00004f58  2**2
+  9 .debug_frame  0000047c  00000000  00000000  00004ffc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000007cf  00000000  00000000  000053c4  2**0
+ 10 .debug_str    000007d5  00000000  00000000  00005478  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000179b  00000000  00000000  00005b93  2**0
+ 11 .debug_loc    000017e6  00000000  00000000  00005c4d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001a0  00000000  00000000  0000732e  2**0
+ 12 .debug_ranges 000001a8  00000000  00000000  00007433  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -44,7 +44,7 @@ Disassembly of section .text:
   20:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
   24:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
   28:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
-  2c:	0c 94 c0 05 	jmp	0xb80	; 0xb80 <__vector_11>
+  2c:	0c 94 cd 05 	jmp	0xb9a	; 0xb9a <__vector_11>
   30:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
   34:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
   38:	0c 94 71 00 	jmp	0xe2	; 0xe2 <__bad_interrupt>
@@ -78,7 +78,7 @@ Disassembly of section .text:
   b4:	11 e0       	ldi	r17, 0x01	; 1
   b6:	a0 e0       	ldi	r26, 0x00	; 0
   b8:	b1 e0       	ldi	r27, 0x01	; 1
-  ba:	e0 ec       	ldi	r30, 0xC0	; 192
+  ba:	ea ed       	ldi	r30, 0xDA	; 218
   bc:	fb e0       	ldi	r31, 0x0B	; 11
   be:	02 c0       	rjmp	.+4      	; 0xc4 <__do_copy_data+0x10>
   c0:	05 90       	lpm	r0, Z+
@@ -101,7 +101,7 @@ Disassembly of section .text:
   d6:	b2 07       	cpc	r27, r18
   d8:	e1 f7       	brne	.-8      	; 0xd2 <.do_clear_bss_loop>
   da:	0e 94 34 03 	call	0x668	; 0x668 <main>
-  de:	0c 94 de 05 	jmp	0xbbc	; 0xbbc <_exit>
+  de:	0c 94 eb 05 	jmp	0xbd6	; 0xbd6 <_exit>
 
 000000e2 <__bad_interrupt>:
   e2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -1067,7 +1067,7 @@ static void initialice(void)
     LCDinit();
  652:	0e 94 ab 02 	call	0x556	; 0x556 <LCDinit>
     TIMER1_Init();
- 656:	0e 94 ab 05 	call	0xb56	; 0xb56 <TIMER1_Init>
+ 656:	0e 94 b8 05 	call	0xb70	; 0xb70 <TIMER1_Init>
     initActuators();
  65a:	0e 94 8b 00 	call	0x116	; 0x116 <initActuators>
     LCDclr();
@@ -1089,909 +1089,936 @@ int main(void)
     while (1)
     {
         MW_update();
- 66c:	0e 94 97 05 	call	0xb2e	; 0xb2e <MW_update>
+ 66c:	0e 94 a4 05 	call	0xb48	; 0xb48 <MW_update>
  670:	fd cf       	rjmp	.-6      	; 0x66c <main+0x4>
 
-00000672 <Actualizar_Digitos_Desde_Segundos>:
+00000672 <Abrio>:
+}
+
+// Acción al abrir la puerta (centralizada)
+static void Abrio(void)
+{
+    Magnetron_Off();
+ 672:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
+    InteriorLight_Off();
+ 676:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
+    LCDGotoXY(0, 1);
+ 67a:	61 e0       	ldi	r22, 0x01	; 1
+ 67c:	80 e0       	ldi	r24, 0x00	; 0
+ 67e:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+    LCDstring((uint8_t*)"Puerta Abierta! ", 16);
+ 682:	60 e1       	ldi	r22, 0x10	; 16
+ 684:	83 e1       	ldi	r24, 0x13	; 19
+ 686:	91 e0       	ldi	r25, 0x01	; 1
+ 688:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 68c:	08 95       	ret
+
+0000068e <Actualizar_Digitos_Desde_Segundos>:
 // Estado interno de la MEF (encapsulado en este módulo)
 static EstadoMicroondas estado_actual = ESTADO_STANDBY;
 
 // Función auxiliar
 void Actualizar_Digitos_Desde_Segundos(void) {
     uint8_t min_act = total_segundos / 60;
- 672:	40 91 6b 01 	lds	r20, 0x016B	; 0x80016b <total_segundos>
- 676:	50 91 6c 01 	lds	r21, 0x016C	; 0x80016c <total_segundos+0x1>
- 67a:	9a 01       	movw	r18, r20
- 67c:	a9 e8       	ldi	r26, 0x89	; 137
- 67e:	b8 e8       	ldi	r27, 0x88	; 136
- 680:	0e 94 cf 05 	call	0xb9e	; 0xb9e <__umulhisi3>
- 684:	fc 01       	movw	r30, r24
- 686:	f6 95       	lsr	r31
- 688:	e7 95       	ror	r30
- 68a:	f2 95       	swap	r31
- 68c:	e2 95       	swap	r30
- 68e:	ef 70       	andi	r30, 0x0F	; 15
- 690:	ef 27       	eor	r30, r31
- 692:	ff 70       	andi	r31, 0x0F	; 15
- 694:	ef 27       	eor	r30, r31
+ 68e:	40 91 6b 01 	lds	r20, 0x016B	; 0x80016b <total_segundos>
+ 692:	50 91 6c 01 	lds	r21, 0x016C	; 0x80016c <total_segundos+0x1>
+ 696:	9a 01       	movw	r18, r20
+ 698:	a9 e8       	ldi	r26, 0x89	; 137
+ 69a:	b8 e8       	ldi	r27, 0x88	; 136
+ 69c:	0e 94 dc 05 	call	0xbb8	; 0xbb8 <__umulhisi3>
+ 6a0:	fc 01       	movw	r30, r24
+ 6a2:	f6 95       	lsr	r31
+ 6a4:	e7 95       	ror	r30
+ 6a6:	f2 95       	swap	r31
+ 6a8:	e2 95       	swap	r30
+ 6aa:	ef 70       	andi	r30, 0x0F	; 15
+ 6ac:	ef 27       	eor	r30, r31
+ 6ae:	ff 70       	andi	r31, 0x0F	; 15
+ 6b0:	ef 27       	eor	r30, r31
     uint8_t seg_act = total_segundos % 60;
- 696:	2c e3       	ldi	r18, 0x3C	; 60
- 698:	2e 9f       	mul	r18, r30
- 69a:	c0 01       	movw	r24, r0
- 69c:	2f 9f       	mul	r18, r31
- 69e:	90 0d       	add	r25, r0
- 6a0:	11 24       	eor	r1, r1
- 6a2:	48 1b       	sub	r20, r24
- 6a4:	59 0b       	sbc	r21, r25
+ 6b2:	2c e3       	ldi	r18, 0x3C	; 60
+ 6b4:	2e 9f       	mul	r18, r30
+ 6b6:	c0 01       	movw	r24, r0
+ 6b8:	2f 9f       	mul	r18, r31
+ 6ba:	90 0d       	add	r25, r0
+ 6bc:	11 24       	eor	r1, r1
+ 6be:	48 1b       	sub	r20, r24
+ 6c0:	59 0b       	sbc	r21, r25
     digitos[0] = min_act / 10;
- 6a6:	ad e6       	ldi	r26, 0x6D	; 109
- 6a8:	b1 e0       	ldi	r27, 0x01	; 1
- 6aa:	8d ec       	ldi	r24, 0xCD	; 205
- 6ac:	e8 9f       	mul	r30, r24
- 6ae:	91 2d       	mov	r25, r1
- 6b0:	11 24       	eor	r1, r1
- 6b2:	96 95       	lsr	r25
- 6b4:	96 95       	lsr	r25
- 6b6:	96 95       	lsr	r25
- 6b8:	9c 93       	st	X, r25
+ 6c2:	ad e6       	ldi	r26, 0x6D	; 109
+ 6c4:	b1 e0       	ldi	r27, 0x01	; 1
+ 6c6:	8d ec       	ldi	r24, 0xCD	; 205
+ 6c8:	e8 9f       	mul	r30, r24
+ 6ca:	91 2d       	mov	r25, r1
+ 6cc:	11 24       	eor	r1, r1
+ 6ce:	96 95       	lsr	r25
+ 6d0:	96 95       	lsr	r25
+ 6d2:	96 95       	lsr	r25
+ 6d4:	9c 93       	st	X, r25
     digitos[1] = min_act % 10;
- 6ba:	99 0f       	add	r25, r25
- 6bc:	29 2f       	mov	r18, r25
- 6be:	22 0f       	add	r18, r18
- 6c0:	22 0f       	add	r18, r18
- 6c2:	92 0f       	add	r25, r18
- 6c4:	e9 1b       	sub	r30, r25
- 6c6:	11 96       	adiw	r26, 0x01	; 1
- 6c8:	ec 93       	st	X, r30
- 6ca:	11 97       	sbiw	r26, 0x01	; 1
+ 6d6:	99 0f       	add	r25, r25
+ 6d8:	29 2f       	mov	r18, r25
+ 6da:	22 0f       	add	r18, r18
+ 6dc:	22 0f       	add	r18, r18
+ 6de:	92 0f       	add	r25, r18
+ 6e0:	e9 1b       	sub	r30, r25
+ 6e2:	11 96       	adiw	r26, 0x01	; 1
+ 6e4:	ec 93       	st	X, r30
+ 6e6:	11 97       	sbiw	r26, 0x01	; 1
     digitos[2] = seg_act / 10;
- 6cc:	48 9f       	mul	r20, r24
- 6ce:	81 2d       	mov	r24, r1
- 6d0:	11 24       	eor	r1, r1
- 6d2:	86 95       	lsr	r24
- 6d4:	86 95       	lsr	r24
- 6d6:	86 95       	lsr	r24
- 6d8:	12 96       	adiw	r26, 0x02	; 2
- 6da:	8c 93       	st	X, r24
- 6dc:	12 97       	sbiw	r26, 0x02	; 2
+ 6e8:	48 9f       	mul	r20, r24
+ 6ea:	81 2d       	mov	r24, r1
+ 6ec:	11 24       	eor	r1, r1
+ 6ee:	86 95       	lsr	r24
+ 6f0:	86 95       	lsr	r24
+ 6f2:	86 95       	lsr	r24
+ 6f4:	12 96       	adiw	r26, 0x02	; 2
+ 6f6:	8c 93       	st	X, r24
+ 6f8:	12 97       	sbiw	r26, 0x02	; 2
     digitos[3] = seg_act % 10;
- 6de:	88 0f       	add	r24, r24
- 6e0:	98 2f       	mov	r25, r24
- 6e2:	99 0f       	add	r25, r25
- 6e4:	99 0f       	add	r25, r25
- 6e6:	89 0f       	add	r24, r25
- 6e8:	48 1b       	sub	r20, r24
- 6ea:	13 96       	adiw	r26, 0x03	; 3
- 6ec:	4c 93       	st	X, r20
- 6ee:	08 95       	ret
+ 6fa:	88 0f       	add	r24, r24
+ 6fc:	98 2f       	mov	r25, r24
+ 6fe:	99 0f       	add	r25, r25
+ 700:	99 0f       	add	r25, r25
+ 702:	89 0f       	add	r24, r25
+ 704:	48 1b       	sub	r20, r24
+ 706:	13 96       	adiw	r26, 0x03	; 3
+ 708:	4c 93       	st	X, r20
+ 70a:	08 95       	ret
 
-000006f0 <Handle_ESTADO_STANDBY>:
+0000070c <Handle_ESTADO_STANDBY>:
+    LCDGotoXY(0, 1);
+    LCDstring((uint8_t*)"Puerta Abierta! ", 16);
 }
 
 // Manejador para ESTADO_STANDBY
 EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
- 6f0:	cf 93       	push	r28
- 6f2:	df 93       	push	r29
- 6f4:	d8 2f       	mov	r29, r24
- 6f6:	c6 2f       	mov	r28, r22
+ 70c:	cf 93       	push	r28
+ 70e:	df 93       	push	r29
+ 710:	d8 2f       	mov	r29, r24
+ 712:	c6 2f       	mov	r28, r22
     // Apagar todos los actuadores
     Magnetron_Off();
- 6f8:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
+ 714:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
     InteriorLight_Off();
- 6fc:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
+ 718:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
     Alarm_off();
- 700:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
+ 71c:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
     
     if (presiono) {
- 704:	dd 23       	and	r29, r29
- 706:	61 f1       	breq	.+88     	; 0x760 <Handle_ESTADO_STANDBY+0x70>
+ 720:	dd 23       	and	r29, r29
+ 722:	61 f1       	breq	.+88     	; 0x77c <Handle_ESTADO_STANDBY+0x70>
         if (tecla >= '0' && tecla <= '9') {
- 708:	80 ed       	ldi	r24, 0xD0	; 208
- 70a:	8c 0f       	add	r24, r28
- 70c:	8a 30       	cpi	r24, 0x0A	; 10
- 70e:	68 f4       	brcc	.+26     	; 0x72a <Handle_ESTADO_STANDBY+0x3a>
+ 724:	80 ed       	ldi	r24, 0xD0	; 208
+ 726:	8c 0f       	add	r24, r28
+ 728:	8a 30       	cpi	r24, 0x0A	; 10
+ 72a:	68 f4       	brcc	.+26     	; 0x746 <Handle_ESTADO_STANDBY+0x3a>
             // Cambiar a ESTADO_CONFIGURANDO
             digitos[0] = 0; digitos[1] = 0; digitos[2] = 0;
- 710:	ed e6       	ldi	r30, 0x6D	; 109
- 712:	f1 e0       	ldi	r31, 0x01	; 1
- 714:	10 82       	st	Z, r1
- 716:	11 82       	std	Z+1, r1	; 0x01
- 718:	12 82       	std	Z+2, r1	; 0x02
+ 72c:	ed e6       	ldi	r30, 0x6D	; 109
+ 72e:	f1 e0       	ldi	r31, 0x01	; 1
+ 730:	10 82       	st	Z, r1
+ 732:	11 82       	std	Z+1, r1	; 0x01
+ 734:	12 82       	std	Z+2, r1	; 0x02
             digitos[3] = tecla - '0';
- 71a:	83 83       	std	Z+3, r24	; 0x03
+ 736:	83 83       	std	Z+3, r24	; 0x03
             cantidad_digitos = 1; 
- 71c:	81 e0       	ldi	r24, 0x01	; 1
- 71e:	80 93 69 01 	sts	0x0169, r24	; 0x800169 <cantidad_digitos>
-            Mostrar_Tiempo_LCD();
- 722:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
-            return ESTADO_CONFIGURANDO;
- 726:	81 e0       	ldi	r24, 0x01	; 1
- 728:	1e c0       	rjmp	.+60     	; 0x766 <Handle_ESTADO_STANDBY+0x76>
-        }
-        else if (tecla == 'C') {
- 72a:	c3 34       	cpi	r28, 0x43	; 67
- 72c:	d9 f4       	brne	.+54     	; 0x764 <Handle_ESTADO_STANDBY+0x74>
-            // Cambiar a ESTADO_COCINANDO directamente con 30 segundos
-            total_segundos = 30;
- 72e:	8e e1       	ldi	r24, 0x1E	; 30
- 730:	90 e0       	ldi	r25, 0x00	; 0
- 732:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 736:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
-            Actualizar_Digitos_Desde_Segundos();
- 73a:	0e 94 39 03 	call	0x672	; 0x672 <Actualizar_Digitos_Desde_Segundos>
+ 738:	81 e0       	ldi	r24, 0x01	; 1
+ 73a:	80 93 69 01 	sts	0x0169, r24	; 0x800169 <cantidad_digitos>
             Mostrar_Tiempo_LCD();
  73e:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+            return ESTADO_CONFIGURANDO;
+ 742:	81 e0       	ldi	r24, 0x01	; 1
+ 744:	1e c0       	rjmp	.+60     	; 0x782 <Handle_ESTADO_STANDBY+0x76>
+        }
+        else if (tecla == 'C') {
+ 746:	c3 34       	cpi	r28, 0x43	; 67
+ 748:	d9 f4       	brne	.+54     	; 0x780 <Handle_ESTADO_STANDBY+0x74>
+            // Cambiar a ESTADO_COCINANDO directamente con 30 segundos
+            total_segundos = 30;
+ 74a:	8e e1       	ldi	r24, 0x1E	; 30
+ 74c:	90 e0       	ldi	r25, 0x00	; 0
+ 74e:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 752:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+            Actualizar_Digitos_Desde_Segundos();
+ 756:	0e 94 47 03 	call	0x68e	; 0x68e <Actualizar_Digitos_Desde_Segundos>
+            Mostrar_Tiempo_LCD();
+ 75a:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             LCDGotoXY(0, 1);
- 742:	61 e0       	ldi	r22, 0x01	; 1
- 744:	80 e0       	ldi	r24, 0x00	; 0
- 746:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 75e:	61 e0       	ldi	r22, 0x01	; 1
+ 760:	80 e0       	ldi	r24, 0x00	; 0
+ 762:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"Cocinando...    ", 16);
- 74a:	60 e1       	ldi	r22, 0x10	; 16
- 74c:	83 e1       	ldi	r24, 0x13	; 19
- 74e:	91 e0       	ldi	r25, 0x01	; 1
- 750:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 766:	60 e1       	ldi	r22, 0x10	; 16
+ 768:	84 e2       	ldi	r24, 0x24	; 36
+ 76a:	91 e0       	ldi	r25, 0x01	; 1
+ 76c:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             Magnetron_On();
- 754:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
+ 770:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
             InteriorLight_On();
- 758:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
+ 774:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
             return ESTADO_COCINANDO;
- 75c:	82 e0       	ldi	r24, 0x02	; 2
- 75e:	03 c0       	rjmp	.+6      	; 0x766 <Handle_ESTADO_STANDBY+0x76>
+ 778:	82 e0       	ldi	r24, 0x02	; 2
+ 77a:	03 c0       	rjmp	.+6      	; 0x782 <Handle_ESTADO_STANDBY+0x76>
         }
     }
     return ESTADO_STANDBY;
- 760:	80 e0       	ldi	r24, 0x00	; 0
- 762:	01 c0       	rjmp	.+2      	; 0x766 <Handle_ESTADO_STANDBY+0x76>
- 764:	80 e0       	ldi	r24, 0x00	; 0
+ 77c:	80 e0       	ldi	r24, 0x00	; 0
+ 77e:	01 c0       	rjmp	.+2      	; 0x782 <Handle_ESTADO_STANDBY+0x76>
+ 780:	80 e0       	ldi	r24, 0x00	; 0
 }
- 766:	df 91       	pop	r29
- 768:	cf 91       	pop	r28
- 76a:	08 95       	ret
+ 782:	df 91       	pop	r29
+ 784:	cf 91       	pop	r28
+ 786:	08 95       	ret
 
-0000076c <Handle_ESTADO_CONFIGURANDO>:
+00000788 <Handle_ESTADO_CONFIGURANDO>:
 
 // Manejador para ESTADO_CONFIGURANDO
 EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
     if (presiono) {
- 76c:	88 23       	and	r24, r24
- 76e:	09 f4       	brne	.+2      	; 0x772 <Handle_ESTADO_CONFIGURANDO+0x6>
- 770:	a4 c0       	rjmp	.+328    	; 0x8ba <__DATA_REGION_LENGTH__+0xba>
+ 788:	88 23       	and	r24, r24
+ 78a:	09 f4       	brne	.+2      	; 0x78e <Handle_ESTADO_CONFIGURANDO+0x6>
+ 78c:	a4 c0       	rjmp	.+328    	; 0x8d6 <__DATA_REGION_LENGTH__+0xd6>
         // Tope de entrada de 4 teclas
         if (tecla >= '0' && tecla <= '9') {
- 772:	80 ed       	ldi	r24, 0xD0	; 208
- 774:	86 0f       	add	r24, r22
- 776:	8a 30       	cpi	r24, 0x0A	; 10
- 778:	a8 f4       	brcc	.+42     	; 0x7a4 <Handle_ESTADO_CONFIGURANDO+0x38>
+ 78e:	80 ed       	ldi	r24, 0xD0	; 208
+ 790:	86 0f       	add	r24, r22
+ 792:	8a 30       	cpi	r24, 0x0A	; 10
+ 794:	a8 f4       	brcc	.+42     	; 0x7c0 <Handle_ESTADO_CONFIGURANDO+0x38>
             if (cantidad_digitos < 4) {
- 77a:	90 91 69 01 	lds	r25, 0x0169	; 0x800169 <cantidad_digitos>
- 77e:	94 30       	cpi	r25, 0x04	; 4
- 780:	08 f0       	brcs	.+2      	; 0x784 <Handle_ESTADO_CONFIGURANDO+0x18>
- 782:	9d c0       	rjmp	.+314    	; 0x8be <__DATA_REGION_LENGTH__+0xbe>
+ 796:	90 91 69 01 	lds	r25, 0x0169	; 0x800169 <cantidad_digitos>
+ 79a:	94 30       	cpi	r25, 0x04	; 4
+ 79c:	08 f0       	brcs	.+2      	; 0x7a0 <Handle_ESTADO_CONFIGURANDO+0x18>
+ 79e:	9d c0       	rjmp	.+314    	; 0x8da <__DATA_REGION_LENGTH__+0xda>
                 digitos[0] = digitos[1];
- 784:	ed e6       	ldi	r30, 0x6D	; 109
- 786:	f1 e0       	ldi	r31, 0x01	; 1
- 788:	21 81       	ldd	r18, Z+1	; 0x01
- 78a:	20 83       	st	Z, r18
+ 7a0:	ed e6       	ldi	r30, 0x6D	; 109
+ 7a2:	f1 e0       	ldi	r31, 0x01	; 1
+ 7a4:	21 81       	ldd	r18, Z+1	; 0x01
+ 7a6:	20 83       	st	Z, r18
                 digitos[1] = digitos[2];
- 78c:	22 81       	ldd	r18, Z+2	; 0x02
- 78e:	21 83       	std	Z+1, r18	; 0x01
+ 7a8:	22 81       	ldd	r18, Z+2	; 0x02
+ 7aa:	21 83       	std	Z+1, r18	; 0x01
                 digitos[2] = digitos[3];
- 790:	23 81       	ldd	r18, Z+3	; 0x03
- 792:	22 83       	std	Z+2, r18	; 0x02
+ 7ac:	23 81       	ldd	r18, Z+3	; 0x03
+ 7ae:	22 83       	std	Z+2, r18	; 0x02
                 digitos[3] = tecla - '0';
- 794:	83 83       	std	Z+3, r24	; 0x03
+ 7b0:	83 83       	std	Z+3, r24	; 0x03
                 cantidad_digitos++;
- 796:	9f 5f       	subi	r25, 0xFF	; 255
- 798:	90 93 69 01 	sts	0x0169, r25	; 0x800169 <cantidad_digitos>
+ 7b2:	9f 5f       	subi	r25, 0xFF	; 255
+ 7b4:	90 93 69 01 	sts	0x0169, r25	; 0x800169 <cantidad_digitos>
                 Mostrar_Tiempo_LCD();
- 79c:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ 7b8:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             
             Actualizar_Digitos_Desde_Segundos();
             Mostrar_Tiempo_LCD();
         }
     }
     return ESTADO_CONFIGURANDO;
- 7a0:	81 e0       	ldi	r24, 0x01	; 1
- 7a2:	08 95       	ret
+ 7bc:	81 e0       	ldi	r24, 0x01	; 1
+ 7be:	08 95       	ret
                 digitos[3] = tecla - '0';
                 cantidad_digitos++;
                 Mostrar_Tiempo_LCD();
             }
         }
         else if (tecla == 'B') {
- 7a4:	62 34       	cpi	r22, 0x42	; 66
- 7a6:	a9 f4       	brne	.+42     	; 0x7d2 <Handle_ESTADO_CONFIGURANDO+0x66>
+ 7c0:	62 34       	cpi	r22, 0x42	; 66
+ 7c2:	a9 f4       	brne	.+42     	; 0x7ee <Handle_ESTADO_CONFIGURANDO+0x66>
             // Volver a ESTADO_STANDBY
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
- 7a8:	ed e6       	ldi	r30, 0x6D	; 109
- 7aa:	f1 e0       	ldi	r31, 0x01	; 1
- 7ac:	13 82       	std	Z+3, r1	; 0x03
- 7ae:	12 82       	std	Z+2, r1	; 0x02
- 7b0:	11 82       	std	Z+1, r1	; 0x01
- 7b2:	10 82       	st	Z, r1
+ 7c4:	ed e6       	ldi	r30, 0x6D	; 109
+ 7c6:	f1 e0       	ldi	r31, 0x01	; 1
+ 7c8:	13 82       	std	Z+3, r1	; 0x03
+ 7ca:	12 82       	std	Z+2, r1	; 0x02
+ 7cc:	11 82       	std	Z+1, r1	; 0x01
+ 7ce:	10 82       	st	Z, r1
             cantidad_digitos = 0;
- 7b4:	10 92 69 01 	sts	0x0169, r1	; 0x800169 <cantidad_digitos>
+ 7d0:	10 92 69 01 	sts	0x0169, r1	; 0x800169 <cantidad_digitos>
             Mostrar_Tiempo_LCD();
- 7b8:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ 7d4:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             LCDGotoXY(0, 1);
- 7bc:	61 e0       	ldi	r22, 0x01	; 1
- 7be:	80 e0       	ldi	r24, 0x00	; 0
- 7c0:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 7d8:	61 e0       	ldi	r22, 0x01	; 1
+ 7da:	80 e0       	ldi	r24, 0x00	; 0
+ 7dc:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"                ", 16);
- 7c4:	60 e1       	ldi	r22, 0x10	; 16
- 7c6:	84 e2       	ldi	r24, 0x24	; 36
- 7c8:	91 e0       	ldi	r25, 0x01	; 1
- 7ca:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 7e0:	60 e1       	ldi	r22, 0x10	; 16
+ 7e2:	85 e3       	ldi	r24, 0x35	; 53
+ 7e4:	91 e0       	ldi	r25, 0x01	; 1
+ 7e6:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_STANDBY;
- 7ce:	80 e0       	ldi	r24, 0x00	; 0
- 7d0:	08 95       	ret
+ 7ea:	80 e0       	ldi	r24, 0x00	; 0
+ 7ec:	08 95       	ret
         }
         else if (tecla == 'A') {
- 7d2:	61 34       	cpi	r22, 0x41	; 65
- 7d4:	09 f0       	breq	.+2      	; 0x7d8 <Handle_ESTADO_CONFIGURANDO+0x6c>
- 7d6:	42 c0       	rjmp	.+132    	; 0x85c <__DATA_REGION_LENGTH__+0x5c>
+ 7ee:	61 34       	cpi	r22, 0x41	; 65
+ 7f0:	09 f0       	breq	.+2      	; 0x7f4 <Handle_ESTADO_CONFIGURANDO+0x6c>
+ 7f2:	42 c0       	rjmp	.+132    	; 0x878 <__DATA_REGION_LENGTH__+0x78>
             // Iniciar cocción
             uint8_t min = (digitos[0] * 10) + digitos[1];
- 7d8:	ed e6       	ldi	r30, 0x6D	; 109
- 7da:	f1 e0       	ldi	r31, 0x01	; 1
- 7dc:	80 81       	ld	r24, Z
- 7de:	91 81       	ldd	r25, Z+1	; 0x01
- 7e0:	88 0f       	add	r24, r24
- 7e2:	28 2f       	mov	r18, r24
- 7e4:	22 0f       	add	r18, r18
- 7e6:	22 0f       	add	r18, r18
- 7e8:	82 0f       	add	r24, r18
- 7ea:	28 2f       	mov	r18, r24
- 7ec:	29 0f       	add	r18, r25
+ 7f4:	ed e6       	ldi	r30, 0x6D	; 109
+ 7f6:	f1 e0       	ldi	r31, 0x01	; 1
+ 7f8:	80 81       	ld	r24, Z
+ 7fa:	91 81       	ldd	r25, Z+1	; 0x01
+ 7fc:	88 0f       	add	r24, r24
+ 7fe:	28 2f       	mov	r18, r24
+ 800:	22 0f       	add	r18, r18
+ 802:	22 0f       	add	r18, r18
+ 804:	82 0f       	add	r24, r18
+ 806:	28 2f       	mov	r18, r24
+ 808:	29 0f       	add	r18, r25
             uint8_t seg = (digitos[2] * 10) + digitos[3];
- 7ee:	82 81       	ldd	r24, Z+2	; 0x02
- 7f0:	93 81       	ldd	r25, Z+3	; 0x03
- 7f2:	88 0f       	add	r24, r24
- 7f4:	38 2f       	mov	r19, r24
- 7f6:	33 0f       	add	r19, r19
- 7f8:	33 0f       	add	r19, r19
- 7fa:	83 0f       	add	r24, r19
- 7fc:	89 0f       	add	r24, r25
+ 80a:	82 81       	ldd	r24, Z+2	; 0x02
+ 80c:	93 81       	ldd	r25, Z+3	; 0x03
+ 80e:	88 0f       	add	r24, r24
+ 810:	38 2f       	mov	r19, r24
+ 812:	33 0f       	add	r19, r19
+ 814:	33 0f       	add	r19, r19
+ 816:	83 0f       	add	r24, r19
+ 818:	89 0f       	add	r24, r25
             total_segundos = (min * 60) + seg;
- 7fe:	90 e0       	ldi	r25, 0x00	; 0
- 800:	3c e3       	ldi	r19, 0x3C	; 60
- 802:	23 9f       	mul	r18, r19
- 804:	80 0d       	add	r24, r0
- 806:	91 1d       	adc	r25, r1
- 808:	11 24       	eor	r1, r1
- 80a:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 80e:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 81a:	90 e0       	ldi	r25, 0x00	; 0
+ 81c:	3c e3       	ldi	r19, 0x3C	; 60
+ 81e:	23 9f       	mul	r18, r19
+ 820:	80 0d       	add	r24, r0
+ 822:	91 1d       	adc	r25, r1
+ 824:	11 24       	eor	r1, r1
+ 826:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 82a:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             
             // APLICAMOS EL TECHO MATEMÁTICO AL INICIAR
             if (total_segundos > MAX_SEGUNDOS) {
- 812:	80 37       	cpi	r24, 0x70	; 112
- 814:	97 41       	sbci	r25, 0x17	; 23
- 816:	30 f0       	brcs	.+12     	; 0x824 <__DATA_REGION_LENGTH__+0x24>
+ 82e:	80 37       	cpi	r24, 0x70	; 112
+ 830:	97 41       	sbci	r25, 0x17	; 23
+ 832:	30 f0       	brcs	.+12     	; 0x840 <__DATA_REGION_LENGTH__+0x40>
                 total_segundos = MAX_SEGUNDOS; 
- 818:	8f e6       	ldi	r24, 0x6F	; 111
- 81a:	97 e1       	ldi	r25, 0x17	; 23
- 81c:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 820:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 834:	8f e6       	ldi	r24, 0x6F	; 111
+ 836:	97 e1       	ldi	r25, 0x17	; 23
+ 838:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 83c:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             }
             
             if (total_segundos > 0) {
- 824:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
- 828:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
- 82c:	89 2b       	or	r24, r25
- 82e:	09 f4       	brne	.+2      	; 0x832 <__DATA_REGION_LENGTH__+0x32>
- 830:	48 c0       	rjmp	.+144    	; 0x8c2 <__DATA_REGION_LENGTH__+0xc2>
+ 840:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
+ 844:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
+ 848:	89 2b       	or	r24, r25
+ 84a:	09 f4       	brne	.+2      	; 0x84e <__DATA_REGION_LENGTH__+0x4e>
+ 84c:	48 c0       	rjmp	.+144    	; 0x8de <__DATA_REGION_LENGTH__+0xde>
                 cantidad_digitos = 0; 
- 832:	10 92 69 01 	sts	0x0169, r1	; 0x800169 <cantidad_digitos>
+ 84e:	10 92 69 01 	sts	0x0169, r1	; 0x800169 <cantidad_digitos>
                 Actualizar_Digitos_Desde_Segundos(); 
- 836:	0e 94 39 03 	call	0x672	; 0x672 <Actualizar_Digitos_Desde_Segundos>
+ 852:	0e 94 47 03 	call	0x68e	; 0x68e <Actualizar_Digitos_Desde_Segundos>
                 Mostrar_Tiempo_LCD();
- 83a:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ 856:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
                 
                 LCDGotoXY(0, 1);
- 83e:	61 e0       	ldi	r22, 0x01	; 1
- 840:	80 e0       	ldi	r24, 0x00	; 0
- 842:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 85a:	61 e0       	ldi	r22, 0x01	; 1
+ 85c:	80 e0       	ldi	r24, 0x00	; 0
+ 85e:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
                 LCDstring((uint8_t*)"Cocinando...    ", 16);
- 846:	60 e1       	ldi	r22, 0x10	; 16
- 848:	83 e1       	ldi	r24, 0x13	; 19
- 84a:	91 e0       	ldi	r25, 0x01	; 1
- 84c:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 862:	60 e1       	ldi	r22, 0x10	; 16
+ 864:	84 e2       	ldi	r24, 0x24	; 36
+ 866:	91 e0       	ldi	r25, 0x01	; 1
+ 868:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
                 Magnetron_On();
- 850:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
+ 86c:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
                 InteriorLight_On();
- 854:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
+ 870:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
                 return ESTADO_COCINANDO;
- 858:	82 e0       	ldi	r24, 0x02	; 2
- 85a:	08 95       	ret
+ 874:	82 e0       	ldi	r24, 0x02	; 2
+ 876:	08 95       	ret
             }
         }
         else if (tecla == 'C') {
- 85c:	63 34       	cpi	r22, 0x43	; 67
- 85e:	99 f5       	brne	.+102    	; 0x8c6 <__DATA_REGION_LENGTH__+0xc6>
+ 878:	63 34       	cpi	r22, 0x43	; 67
+ 87a:	99 f5       	brne	.+102    	; 0x8e2 <__DATA_REGION_LENGTH__+0xe2>
             // Sumar 30 segundos sin dejar configurando
             uint8_t min = (digitos[0] * 10) + digitos[1];
- 860:	ed e6       	ldi	r30, 0x6D	; 109
- 862:	f1 e0       	ldi	r31, 0x01	; 1
- 864:	80 81       	ld	r24, Z
- 866:	91 81       	ldd	r25, Z+1	; 0x01
- 868:	88 0f       	add	r24, r24
- 86a:	28 2f       	mov	r18, r24
- 86c:	22 0f       	add	r18, r18
- 86e:	22 0f       	add	r18, r18
- 870:	82 0f       	add	r24, r18
- 872:	28 2f       	mov	r18, r24
- 874:	29 0f       	add	r18, r25
+ 87c:	ed e6       	ldi	r30, 0x6D	; 109
+ 87e:	f1 e0       	ldi	r31, 0x01	; 1
+ 880:	80 81       	ld	r24, Z
+ 882:	91 81       	ldd	r25, Z+1	; 0x01
+ 884:	88 0f       	add	r24, r24
+ 886:	28 2f       	mov	r18, r24
+ 888:	22 0f       	add	r18, r18
+ 88a:	22 0f       	add	r18, r18
+ 88c:	82 0f       	add	r24, r18
+ 88e:	28 2f       	mov	r18, r24
+ 890:	29 0f       	add	r18, r25
             uint8_t seg = (digitos[2] * 10) + digitos[3];
- 876:	82 81       	ldd	r24, Z+2	; 0x02
- 878:	93 81       	ldd	r25, Z+3	; 0x03
- 87a:	88 0f       	add	r24, r24
- 87c:	38 2f       	mov	r19, r24
- 87e:	33 0f       	add	r19, r19
- 880:	33 0f       	add	r19, r19
- 882:	83 0f       	add	r24, r19
- 884:	89 0f       	add	r24, r25
+ 892:	82 81       	ldd	r24, Z+2	; 0x02
+ 894:	93 81       	ldd	r25, Z+3	; 0x03
+ 896:	88 0f       	add	r24, r24
+ 898:	38 2f       	mov	r19, r24
+ 89a:	33 0f       	add	r19, r19
+ 89c:	33 0f       	add	r19, r19
+ 89e:	83 0f       	add	r24, r19
+ 8a0:	89 0f       	add	r24, r25
             total_segundos = (min * 60) + seg + 30;
- 886:	90 e0       	ldi	r25, 0x00	; 0
- 888:	3c e3       	ldi	r19, 0x3C	; 60
- 88a:	23 9f       	mul	r18, r19
- 88c:	80 0d       	add	r24, r0
- 88e:	91 1d       	adc	r25, r1
- 890:	11 24       	eor	r1, r1
- 892:	4e 96       	adiw	r24, 0x1e	; 30
- 894:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 898:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 8a2:	90 e0       	ldi	r25, 0x00	; 0
+ 8a4:	3c e3       	ldi	r19, 0x3C	; 60
+ 8a6:	23 9f       	mul	r18, r19
+ 8a8:	80 0d       	add	r24, r0
+ 8aa:	91 1d       	adc	r25, r1
+ 8ac:	11 24       	eor	r1, r1
+ 8ae:	4e 96       	adiw	r24, 0x1e	; 30
+ 8b0:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 8b4:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             
             // APLICAMOS EL TECHO MATEMÁTICO EN EL +30
             if (total_segundos > MAX_SEGUNDOS) {
- 89c:	80 37       	cpi	r24, 0x70	; 112
- 89e:	97 41       	sbci	r25, 0x17	; 23
- 8a0:	30 f0       	brcs	.+12     	; 0x8ae <__DATA_REGION_LENGTH__+0xae>
+ 8b8:	80 37       	cpi	r24, 0x70	; 112
+ 8ba:	97 41       	sbci	r25, 0x17	; 23
+ 8bc:	30 f0       	brcs	.+12     	; 0x8ca <__DATA_REGION_LENGTH__+0xca>
                 total_segundos = MAX_SEGUNDOS;
- 8a2:	8f e6       	ldi	r24, 0x6F	; 111
- 8a4:	97 e1       	ldi	r25, 0x17	; 23
- 8a6:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 8aa:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 8be:	8f e6       	ldi	r24, 0x6F	; 111
+ 8c0:	97 e1       	ldi	r25, 0x17	; 23
+ 8c2:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 8c6:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             }
             
             Actualizar_Digitos_Desde_Segundos();
- 8ae:	0e 94 39 03 	call	0x672	; 0x672 <Actualizar_Digitos_Desde_Segundos>
+ 8ca:	0e 94 47 03 	call	0x68e	; 0x68e <Actualizar_Digitos_Desde_Segundos>
             Mostrar_Tiempo_LCD();
- 8b2:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ 8ce:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
         }
     }
     return ESTADO_CONFIGURANDO;
- 8b6:	81 e0       	ldi	r24, 0x01	; 1
- 8b8:	08 95       	ret
- 8ba:	81 e0       	ldi	r24, 0x01	; 1
- 8bc:	08 95       	ret
- 8be:	81 e0       	ldi	r24, 0x01	; 1
- 8c0:	08 95       	ret
- 8c2:	81 e0       	ldi	r24, 0x01	; 1
- 8c4:	08 95       	ret
- 8c6:	81 e0       	ldi	r24, 0x01	; 1
+ 8d2:	81 e0       	ldi	r24, 0x01	; 1
+ 8d4:	08 95       	ret
+ 8d6:	81 e0       	ldi	r24, 0x01	; 1
+ 8d8:	08 95       	ret
+ 8da:	81 e0       	ldi	r24, 0x01	; 1
+ 8dc:	08 95       	ret
+ 8de:	81 e0       	ldi	r24, 0x01	; 1
+ 8e0:	08 95       	ret
+ 8e2:	81 e0       	ldi	r24, 0x01	; 1
 }
- 8c8:	08 95       	ret
+ 8e4:	08 95       	ret
 
-000008ca <Handle_ESTADO_COCINANDO>:
+000008e6 <Handle_ESTADO_COCINANDO>:
 
 // Manejador para ESTADO_COCINANDO
 EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
- 8ca:	cf 93       	push	r28
- 8cc:	df 93       	push	r29
- 8ce:	d8 2f       	mov	r29, r24
- 8d0:	c6 2f       	mov	r28, r22
+ 8e6:	cf 93       	push	r28
+ 8e8:	df 93       	push	r29
+ 8ea:	d8 2f       	mov	r29, r24
+ 8ec:	c6 2f       	mov	r28, r22
     // Manejo del decremento de tiempo
     if (flag_un_segundo) {
- 8d2:	80 91 71 01 	lds	r24, 0x0171	; 0x800171 <flag_un_segundo>
- 8d6:	88 23       	and	r24, r24
- 8d8:	69 f1       	breq	.+90     	; 0x934 <__stack+0x35>
+ 8ee:	80 91 71 01 	lds	r24, 0x0171	; 0x800171 <flag_un_segundo>
+ 8f2:	88 23       	and	r24, r24
+ 8f4:	69 f1       	breq	.+90     	; 0x950 <__stack+0x51>
         flag_un_segundo = 0;
- 8da:	10 92 71 01 	sts	0x0171, r1	; 0x800171 <flag_un_segundo>
+ 8f6:	10 92 71 01 	sts	0x0171, r1	; 0x800171 <flag_un_segundo>
         if (total_segundos > 0) {
- 8de:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
- 8e2:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
- 8e6:	00 97       	sbiw	r24, 0x00	; 0
- 8e8:	49 f0       	breq	.+18     	; 0x8fc <Handle_ESTADO_COCINANDO+0x32>
+ 8fa:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
+ 8fe:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
+ 902:	00 97       	sbiw	r24, 0x00	; 0
+ 904:	49 f0       	breq	.+18     	; 0x918 <__stack+0x19>
             total_segundos--;
- 8ea:	01 97       	sbiw	r24, 0x01	; 1
- 8ec:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 8f0:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 906:	01 97       	sbiw	r24, 0x01	; 1
+ 908:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 90c:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             Actualizar_Digitos_Desde_Segundos();
- 8f4:	0e 94 39 03 	call	0x672	; 0x672 <Actualizar_Digitos_Desde_Segundos>
+ 910:	0e 94 47 03 	call	0x68e	; 0x68e <Actualizar_Digitos_Desde_Segundos>
             Mostrar_Tiempo_LCD();
- 8f8:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ 914:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
         }
         
         if (total_segundos == 0) {
- 8fc:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
- 900:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
- 904:	89 2b       	or	r24, r25
- 906:	b1 f4       	brne	.+44     	; 0x934 <__stack+0x35>
+ 918:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
+ 91c:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
+ 920:	89 2b       	or	r24, r25
+ 922:	b1 f4       	brne	.+44     	; 0x950 <__stack+0x51>
             Magnetron_Off();
- 908:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
+ 924:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
             InteriorLight_Off();
- 90c:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
+ 928:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
             Alarm_On();
- 910:	0e 94 83 00 	call	0x106	; 0x106 <Alarm_On>
+ 92c:	0e 94 83 00 	call	0x106	; 0x106 <Alarm_On>
             contador_finalizado = 0;
- 914:	10 92 6a 01 	sts	0x016A, r1	; 0x80016a <contador_finalizado>
+ 930:	10 92 6a 01 	sts	0x016A, r1	; 0x80016a <contador_finalizado>
             visible_finalizado = 1;
- 918:	81 e0       	ldi	r24, 0x01	; 1
- 91a:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <visible_finalizado>
+ 934:	81 e0       	ldi	r24, 0x01	; 1
+ 936:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <visible_finalizado>
             LCDGotoXY(0, 1);
- 91e:	61 e0       	ldi	r22, 0x01	; 1
- 920:	80 e0       	ldi	r24, 0x00	; 0
- 922:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 93a:	61 e0       	ldi	r22, 0x01	; 1
+ 93c:	80 e0       	ldi	r24, 0x00	; 0
+ 93e:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"Fin Coccion!    ", 16);
- 926:	60 e1       	ldi	r22, 0x10	; 16
- 928:	85 e3       	ldi	r24, 0x35	; 53
- 92a:	91 e0       	ldi	r25, 0x01	; 1
- 92c:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 942:	60 e1       	ldi	r22, 0x10	; 16
+ 944:	86 e4       	ldi	r24, 0x46	; 70
+ 946:	91 e0       	ldi	r25, 0x01	; 1
+ 948:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_FINALIZADO;
- 930:	85 e0       	ldi	r24, 0x05	; 5
- 932:	3f c0       	rjmp	.+126    	; 0x9b2 <__stack+0xb3>
+ 94c:	85 e0       	ldi	r24, 0x05	; 5
+ 94e:	34 c0       	rjmp	.+104    	; 0x9b8 <__stack+0xb9>
         }
 
     }
     
     // Manejo de teclas durante cocción
     if (presiono) {
- 934:	dd 23       	and	r29, r29
- 936:	d1 f1       	breq	.+116    	; 0x9ac <__stack+0xad>
+ 950:	dd 23       	and	r29, r29
+ 952:	79 f1       	breq	.+94     	; 0x9b2 <__stack+0xb3>
         if (tecla == 'B') {
- 938:	c2 34       	cpi	r28, 0x42	; 66
- 93a:	69 f4       	brne	.+26     	; 0x956 <__stack+0x57>
+ 954:	c2 34       	cpi	r28, 0x42	; 66
+ 956:	69 f4       	brne	.+26     	; 0x972 <__stack+0x73>
             // Pausar
             Magnetron_Off();
- 93c:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
+ 958:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
             LCDGotoXY(0, 1);
- 940:	61 e0       	ldi	r22, 0x01	; 1
- 942:	80 e0       	ldi	r24, 0x00	; 0
- 944:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 95c:	61 e0       	ldi	r22, 0x01	; 1
+ 95e:	80 e0       	ldi	r24, 0x00	; 0
+ 960:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"Pausado...      ", 16);
- 948:	60 e1       	ldi	r22, 0x10	; 16
- 94a:	86 e4       	ldi	r24, 0x46	; 70
- 94c:	91 e0       	ldi	r25, 0x01	; 1
- 94e:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 964:	60 e1       	ldi	r22, 0x10	; 16
+ 966:	87 e5       	ldi	r24, 0x57	; 87
+ 968:	91 e0       	ldi	r25, 0x01	; 1
+ 96a:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_PAUSADO;
- 952:	84 e0       	ldi	r24, 0x04	; 4
- 954:	2e c0       	rjmp	.+92     	; 0x9b2 <__stack+0xb3>
+ 96e:	84 e0       	ldi	r24, 0x04	; 4
+ 970:	23 c0       	rjmp	.+70     	; 0x9b8 <__stack+0xb9>
         }
         else if (tecla == 'C') {
- 956:	c3 34       	cpi	r28, 0x43	; 67
- 958:	c1 f4       	brne	.+48     	; 0x98a <__stack+0x8b>
+ 972:	c3 34       	cpi	r28, 0x43	; 67
+ 974:	c1 f4       	brne	.+48     	; 0x9a6 <__stack+0xa7>
             // Sumar 30 segundos
             total_segundos += 30;
- 95a:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
- 95e:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
- 962:	4e 96       	adiw	r24, 0x1e	; 30
- 964:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 968:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 976:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
+ 97a:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
+ 97e:	4e 96       	adiw	r24, 0x1e	; 30
+ 980:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 984:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             
             // APLICAMOS EL TECHO MATEMÁTICO AL SUMAR TIEMPO EN CALIENTE
             if (total_segundos > MAX_SEGUNDOS) {
- 96c:	80 37       	cpi	r24, 0x70	; 112
- 96e:	97 41       	sbci	r25, 0x17	; 23
- 970:	30 f0       	brcs	.+12     	; 0x97e <__stack+0x7f>
+ 988:	80 37       	cpi	r24, 0x70	; 112
+ 98a:	97 41       	sbci	r25, 0x17	; 23
+ 98c:	30 f0       	brcs	.+12     	; 0x99a <__stack+0x9b>
                 total_segundos = MAX_SEGUNDOS;
- 972:	8f e6       	ldi	r24, 0x6F	; 111
- 974:	97 e1       	ldi	r25, 0x17	; 23
- 976:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
- 97a:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
+ 98e:	8f e6       	ldi	r24, 0x6F	; 111
+ 990:	97 e1       	ldi	r25, 0x17	; 23
+ 992:	90 93 6c 01 	sts	0x016C, r25	; 0x80016c <total_segundos+0x1>
+ 996:	80 93 6b 01 	sts	0x016B, r24	; 0x80016b <total_segundos>
             }
             
             Actualizar_Digitos_Desde_Segundos();
- 97e:	0e 94 39 03 	call	0x672	; 0x672 <Actualizar_Digitos_Desde_Segundos>
+ 99a:	0e 94 47 03 	call	0x68e	; 0x68e <Actualizar_Digitos_Desde_Segundos>
             Mostrar_Tiempo_LCD();
- 982:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
-            LCDGotoXY(0, 1);
-            LCDstring((uint8_t*)"Puerta Abierta! ", 16);
+ 99e:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+            // Abrir puerta -> mostrar mensaje y pasar a ESTADO_ABIERTO
+            Abrio();
             return ESTADO_ABIERTO;
         }
     }
     return ESTADO_COCINANDO;
- 986:	82 e0       	ldi	r24, 0x02	; 2
- 988:	14 c0       	rjmp	.+40     	; 0x9b2 <__stack+0xb3>
+ 9a2:	82 e0       	ldi	r24, 0x02	; 2
+ 9a4:	09 c0       	rjmp	.+18     	; 0x9b8 <__stack+0xb9>
             }
             
             Actualizar_Digitos_Desde_Segundos();
             Mostrar_Tiempo_LCD();
         }
         else if (tecla == 'D') {
- 98a:	c4 34       	cpi	r28, 0x44	; 68
- 98c:	89 f4       	brne	.+34     	; 0x9b0 <__stack+0xb1>
+ 9a6:	c4 34       	cpi	r28, 0x44	; 68
+ 9a8:	31 f4       	brne	.+12     	; 0x9b6 <__stack+0xb7>
             // Abrir puerta -> mostrar mensaje y pasar a ESTADO_ABIERTO
-            Magnetron_Off();
- 98e:	0e 94 77 00 	call	0xee	; 0xee <Magnetron_Off>
-            InteriorLight_Off();
- 992:	0e 94 7f 00 	call	0xfe	; 0xfe <InteriorLight_Off>
-            LCDGotoXY(0, 1);
- 996:	61 e0       	ldi	r22, 0x01	; 1
- 998:	80 e0       	ldi	r24, 0x00	; 0
- 99a:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
-            LCDstring((uint8_t*)"Puerta Abierta! ", 16);
- 99e:	60 e1       	ldi	r22, 0x10	; 16
- 9a0:	87 e5       	ldi	r24, 0x57	; 87
- 9a2:	91 e0       	ldi	r25, 0x01	; 1
- 9a4:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+            Abrio();
+ 9aa:	0e 94 39 03 	call	0x672	; 0x672 <Abrio>
             return ESTADO_ABIERTO;
- 9a8:	83 e0       	ldi	r24, 0x03	; 3
- 9aa:	03 c0       	rjmp	.+6      	; 0x9b2 <__stack+0xb3>
+ 9ae:	83 e0       	ldi	r24, 0x03	; 3
+ 9b0:	03 c0       	rjmp	.+6      	; 0x9b8 <__stack+0xb9>
         }
     }
     return ESTADO_COCINANDO;
- 9ac:	82 e0       	ldi	r24, 0x02	; 2
- 9ae:	01 c0       	rjmp	.+2      	; 0x9b2 <__stack+0xb3>
- 9b0:	82 e0       	ldi	r24, 0x02	; 2
+ 9b2:	82 e0       	ldi	r24, 0x02	; 2
+ 9b4:	01 c0       	rjmp	.+2      	; 0x9b8 <__stack+0xb9>
+ 9b6:	82 e0       	ldi	r24, 0x02	; 2
 }
- 9b2:	df 91       	pop	r29
- 9b4:	cf 91       	pop	r28
- 9b6:	08 95       	ret
+ 9b8:	df 91       	pop	r29
+ 9ba:	cf 91       	pop	r28
+ 9bc:	08 95       	ret
 
-000009b8 <Handle_ESTADO_PAUSADO>:
+000009be <Handle_ESTADO_PAUSADO>:
 
 // Manejador para ESTADO_PAUSADO
 EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
     if (presiono) {
- 9b8:	88 23       	and	r24, r24
- 9ba:	99 f1       	breq	.+102    	; 0xa22 <Handle_ESTADO_PAUSADO+0x6a>
+ 9be:	88 23       	and	r24, r24
+ 9c0:	99 f1       	breq	.+102    	; 0xa28 <Handle_ESTADO_PAUSADO+0x6a>
         if (tecla == 'A') {
- 9bc:	61 34       	cpi	r22, 0x41	; 65
- 9be:	79 f4       	brne	.+30     	; 0x9de <Handle_ESTADO_PAUSADO+0x26>
+ 9c2:	61 34       	cpi	r22, 0x41	; 65
+ 9c4:	79 f4       	brne	.+30     	; 0x9e4 <Handle_ESTADO_PAUSADO+0x26>
             // Reanudar cocción
             Magnetron_On();
- 9c0:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
+ 9c6:	0e 94 73 00 	call	0xe6	; 0xe6 <Magnetron_On>
             InteriorLight_On();
- 9c4:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
+ 9ca:	0e 94 7b 00 	call	0xf6	; 0xf6 <InteriorLight_On>
             LCDGotoXY(0, 1);
- 9c8:	61 e0       	ldi	r22, 0x01	; 1
- 9ca:	80 e0       	ldi	r24, 0x00	; 0
- 9cc:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 9ce:	61 e0       	ldi	r22, 0x01	; 1
+ 9d0:	80 e0       	ldi	r24, 0x00	; 0
+ 9d2:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"Cocinando...    ", 16);
- 9d0:	60 e1       	ldi	r22, 0x10	; 16
- 9d2:	83 e1       	ldi	r24, 0x13	; 19
- 9d4:	91 e0       	ldi	r25, 0x01	; 1
- 9d6:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 9d6:	60 e1       	ldi	r22, 0x10	; 16
+ 9d8:	84 e2       	ldi	r24, 0x24	; 36
+ 9da:	91 e0       	ldi	r25, 0x01	; 1
+ 9dc:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_COCINANDO;
- 9da:	82 e0       	ldi	r24, 0x02	; 2
- 9dc:	08 95       	ret
+ 9e0:	82 e0       	ldi	r24, 0x02	; 2
+ 9e2:	08 95       	ret
         } 
         else if (tecla == 'D') {
- 9de:	64 34       	cpi	r22, 0x44	; 68
- 9e0:	59 f4       	brne	.+22     	; 0x9f8 <Handle_ESTADO_PAUSADO+0x40>
+ 9e4:	64 34       	cpi	r22, 0x44	; 68
+ 9e6:	59 f4       	brne	.+22     	; 0x9fe <Handle_ESTADO_PAUSADO+0x40>
             // Cerrar puerta: quitar el letrero de puerta abierta
             LCDGotoXY(0, 1);
- 9e2:	61 e0       	ldi	r22, 0x01	; 1
- 9e4:	80 e0       	ldi	r24, 0x00	; 0
- 9e6:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ 9e8:	61 e0       	ldi	r22, 0x01	; 1
+ 9ea:	80 e0       	ldi	r24, 0x00	; 0
+ 9ec:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"                ", 16);
- 9ea:	60 e1       	ldi	r22, 0x10	; 16
- 9ec:	84 e2       	ldi	r24, 0x24	; 36
- 9ee:	91 e0       	ldi	r25, 0x01	; 1
- 9f0:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ 9f0:	60 e1       	ldi	r22, 0x10	; 16
+ 9f2:	85 e3       	ldi	r24, 0x35	; 53
+ 9f4:	91 e0       	ldi	r25, 0x01	; 1
+ 9f6:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_PAUSADO;
- 9f4:	84 e0       	ldi	r24, 0x04	; 4
- 9f6:	08 95       	ret
+ 9fa:	84 e0       	ldi	r24, 0x04	; 4
+ 9fc:	08 95       	ret
         }
         else if (tecla == 'B') {
- 9f8:	62 34       	cpi	r22, 0x42	; 66
- 9fa:	a9 f4       	brne	.+42     	; 0xa26 <Handle_ESTADO_PAUSADO+0x6e>
+ 9fe:	62 34       	cpi	r22, 0x42	; 66
+ a00:	a9 f4       	brne	.+42     	; 0xa2c <Handle_ESTADO_PAUSADO+0x6e>
             // Volver a ESTADO_STANDBY
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
- 9fc:	ed e6       	ldi	r30, 0x6D	; 109
- 9fe:	f1 e0       	ldi	r31, 0x01	; 1
- a00:	13 82       	std	Z+3, r1	; 0x03
- a02:	12 82       	std	Z+2, r1	; 0x02
- a04:	11 82       	std	Z+1, r1	; 0x01
- a06:	10 82       	st	Z, r1
+ a02:	ed e6       	ldi	r30, 0x6D	; 109
+ a04:	f1 e0       	ldi	r31, 0x01	; 1
+ a06:	13 82       	std	Z+3, r1	; 0x03
+ a08:	12 82       	std	Z+2, r1	; 0x02
+ a0a:	11 82       	std	Z+1, r1	; 0x01
+ a0c:	10 82       	st	Z, r1
             Mostrar_Tiempo_LCD();
- a08:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ a0e:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             LCDGotoXY(0, 1);
- a0c:	61 e0       	ldi	r22, 0x01	; 1
- a0e:	80 e0       	ldi	r24, 0x00	; 0
- a10:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ a12:	61 e0       	ldi	r22, 0x01	; 1
+ a14:	80 e0       	ldi	r24, 0x00	; 0
+ a16:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"                ", 16);
- a14:	60 e1       	ldi	r22, 0x10	; 16
- a16:	84 e2       	ldi	r24, 0x24	; 36
- a18:	91 e0       	ldi	r25, 0x01	; 1
- a1a:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ a1a:	60 e1       	ldi	r22, 0x10	; 16
+ a1c:	85 e3       	ldi	r24, 0x35	; 53
+ a1e:	91 e0       	ldi	r25, 0x01	; 1
+ a20:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             return ESTADO_STANDBY;
- a1e:	80 e0       	ldi	r24, 0x00	; 0
- a20:	08 95       	ret
+ a24:	80 e0       	ldi	r24, 0x00	; 0
+ a26:	08 95       	ret
         }
     }
     return ESTADO_PAUSADO;
- a22:	84 e0       	ldi	r24, 0x04	; 4
- a24:	08 95       	ret
- a26:	84 e0       	ldi	r24, 0x04	; 4
+ a28:	84 e0       	ldi	r24, 0x04	; 4
+ a2a:	08 95       	ret
+ a2c:	84 e0       	ldi	r24, 0x04	; 4
 }
- a28:	08 95       	ret
+ a2e:	08 95       	ret
 
-00000a2a <Handle_ESTADO_ABIERTO>:
+00000a30 <Handle_ESTADO_ABIERTO>:
 
 // Manejador para ESTADO_ABIERTO
 EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
     // Mantener la primera línea (tiempo) y mostrar "Puerta Abierta!" en la segunda
     if (presiono) {
- a2a:	88 23       	and	r24, r24
- a2c:	79 f0       	breq	.+30     	; 0xa4c <Handle_ESTADO_ABIERTO+0x22>
+ a30:	88 23       	and	r24, r24
+ a32:	79 f0       	breq	.+30     	; 0xa52 <Handle_ESTADO_ABIERTO+0x22>
         if (tecla == 'D') {
- a2e:	64 34       	cpi	r22, 0x44	; 68
- a30:	79 f4       	brne	.+30     	; 0xa50 <Handle_ESTADO_ABIERTO+0x26>
+ a34:	64 34       	cpi	r22, 0x44	; 68
+ a36:	79 f4       	brne	.+30     	; 0xa56 <Handle_ESTADO_ABIERTO+0x26>
             // Quitar el mensaje y pasar a configurando sin alterar el tiempo
             LCDGotoXY(0, 1);
- a32:	61 e0       	ldi	r22, 0x01	; 1
- a34:	80 e0       	ldi	r24, 0x00	; 0
- a36:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ a38:	61 e0       	ldi	r22, 0x01	; 1
+ a3a:	80 e0       	ldi	r24, 0x00	; 0
+ a3c:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"                ", 16);
- a3a:	60 e1       	ldi	r22, 0x10	; 16
- a3c:	84 e2       	ldi	r24, 0x24	; 36
- a3e:	91 e0       	ldi	r25, 0x01	; 1
- a40:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ a40:	60 e1       	ldi	r22, 0x10	; 16
+ a42:	85 e3       	ldi	r24, 0x35	; 53
+ a44:	91 e0       	ldi	r25, 0x01	; 1
+ a46:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             // Actualizar la primera línea para reflejar el tiempo actual
             Mostrar_Tiempo_LCD();
- a44:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ a4a:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             return ESTADO_CONFIGURANDO;
- a48:	81 e0       	ldi	r24, 0x01	; 1
- a4a:	08 95       	ret
+ a4e:	81 e0       	ldi	r24, 0x01	; 1
+ a50:	08 95       	ret
         }
     }
     return ESTADO_ABIERTO;
- a4c:	83 e0       	ldi	r24, 0x03	; 3
- a4e:	08 95       	ret
- a50:	83 e0       	ldi	r24, 0x03	; 3
+ a52:	83 e0       	ldi	r24, 0x03	; 3
+ a54:	08 95       	ret
+ a56:	83 e0       	ldi	r24, 0x03	; 3
 }
- a52:	08 95       	ret
+ a58:	08 95       	ret
 
-00000a54 <Handle_ESTADO_FINALIZADO>:
+00000a5a <Handle_ESTADO_FINALIZADO>:
 
 // Manejador para ESTADO_FINALIZADO
 EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
- a54:	cf 93       	push	r28
- a56:	c8 2f       	mov	r28, r24
+ a5a:	cf 93       	push	r28
+ a5c:	c8 2f       	mov	r28, r24
     // Parpadeo de finalización
     if (flag_un_segundo) {
- a58:	80 91 71 01 	lds	r24, 0x0171	; 0x800171 <flag_un_segundo>
- a5c:	88 23       	and	r24, r24
- a5e:	91 f1       	breq	.+100    	; 0xac4 <Handle_ESTADO_FINALIZADO+0x70>
+ a5e:	80 91 71 01 	lds	r24, 0x0171	; 0x800171 <flag_un_segundo>
+ a62:	88 23       	and	r24, r24
+ a64:	91 f1       	breq	.+100    	; 0xaca <Handle_ESTADO_FINALIZADO+0x70>
         flag_un_segundo = 0;
- a60:	10 92 71 01 	sts	0x0171, r1	; 0x800171 <flag_un_segundo>
+ a66:	10 92 71 01 	sts	0x0171, r1	; 0x800171 <flag_un_segundo>
         contador_finalizado++;
- a64:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <contador_finalizado>
- a68:	8f 5f       	subi	r24, 0xFF	; 255
- a6a:	80 93 6a 01 	sts	0x016A, r24	; 0x80016a <contador_finalizado>
+ a6a:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <contador_finalizado>
+ a6e:	8f 5f       	subi	r24, 0xFF	; 255
+ a70:	80 93 6a 01 	sts	0x016A, r24	; 0x80016a <contador_finalizado>
         visible_finalizado = !visible_finalizado; 
- a6e:	81 e0       	ldi	r24, 0x01	; 1
- a70:	90 91 02 01 	lds	r25, 0x0102	; 0x800102 <visible_finalizado>
- a74:	91 11       	cpse	r25, r1
- a76:	80 e0       	ldi	r24, 0x00	; 0
- a78:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <visible_finalizado>
+ a74:	81 e0       	ldi	r24, 0x01	; 1
+ a76:	90 91 02 01 	lds	r25, 0x0102	; 0x800102 <visible_finalizado>
+ a7a:	91 11       	cpse	r25, r1
+ a7c:	80 e0       	ldi	r24, 0x00	; 0
+ a7e:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <visible_finalizado>
         
         if (visible_finalizado) {
- a7c:	88 23       	and	r24, r24
- a7e:	71 f0       	breq	.+28     	; 0xa9c <Handle_ESTADO_FINALIZADO+0x48>
+ a82:	88 23       	and	r24, r24
+ a84:	71 f0       	breq	.+28     	; 0xaa2 <Handle_ESTADO_FINALIZADO+0x48>
             Mostrar_Tiempo_LCD();
- a80:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ a86:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             LCDGotoXY(0, 1);
- a84:	61 e0       	ldi	r22, 0x01	; 1
- a86:	80 e0       	ldi	r24, 0x00	; 0
- a88:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
+ a8a:	61 e0       	ldi	r22, 0x01	; 1
+ a8c:	80 e0       	ldi	r24, 0x00	; 0
+ a8e:	0e 94 72 02 	call	0x4e4	; 0x4e4 <LCDGotoXY>
             LCDstring((uint8_t*)"Fin Coccion!    ", 16);
- a8c:	60 e1       	ldi	r22, 0x10	; 16
- a8e:	85 e3       	ldi	r24, 0x35	; 53
- a90:	91 e0       	ldi	r25, 0x01	; 1
- a92:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
+ a92:	60 e1       	ldi	r22, 0x10	; 16
+ a94:	86 e4       	ldi	r24, 0x46	; 70
+ a96:	91 e0       	ldi	r25, 0x01	; 1
+ a98:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
             Alarm_On();
- a96:	0e 94 83 00 	call	0x106	; 0x106 <Alarm_On>
- a9a:	04 c0       	rjmp	.+8      	; 0xaa4 <Handle_ESTADO_FINALIZADO+0x50>
+ a9c:	0e 94 83 00 	call	0x106	; 0x106 <Alarm_On>
+ aa0:	04 c0       	rjmp	.+8      	; 0xaaa <Handle_ESTADO_FINALIZADO+0x50>
         } else {
             LCDclr();           
- a9c:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
+ aa2:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
             Alarm_off();
- aa0:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
+ aa6:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
         }
         
         if (contador_finalizado >= 5) {
- aa4:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <contador_finalizado>
- aa8:	85 30       	cpi	r24, 0x05	; 5
- aaa:	60 f0       	brcs	.+24     	; 0xac4 <Handle_ESTADO_FINALIZADO+0x70>
+ aaa:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <contador_finalizado>
+ aae:	85 30       	cpi	r24, 0x05	; 5
+ ab0:	60 f0       	brcs	.+24     	; 0xaca <Handle_ESTADO_FINALIZADO+0x70>
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
- aac:	ed e6       	ldi	r30, 0x6D	; 109
- aae:	f1 e0       	ldi	r31, 0x01	; 1
- ab0:	13 82       	std	Z+3, r1	; 0x03
- ab2:	12 82       	std	Z+2, r1	; 0x02
- ab4:	11 82       	std	Z+1, r1	; 0x01
- ab6:	10 82       	st	Z, r1
+ ab2:	ed e6       	ldi	r30, 0x6D	; 109
+ ab4:	f1 e0       	ldi	r31, 0x01	; 1
+ ab6:	13 82       	std	Z+3, r1	; 0x03
+ ab8:	12 82       	std	Z+2, r1	; 0x02
+ aba:	11 82       	std	Z+1, r1	; 0x01
+ abc:	10 82       	st	Z, r1
             LCDclr();
- ab8:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
+ abe:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
             Mostrar_Tiempo_LCD();
- abc:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ ac2:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             return ESTADO_STANDBY;
- ac0:	80 e0       	ldi	r24, 0x00	; 0
- ac2:	11 c0       	rjmp	.+34     	; 0xae6 <Handle_ESTADO_FINALIZADO+0x92>
+ ac6:	80 e0       	ldi	r24, 0x00	; 0
+ ac8:	11 c0       	rjmp	.+34     	; 0xaec <Handle_ESTADO_FINALIZADO+0x92>
         }
     }
 
     // Cualquier tecla presionada vuelve a STANDBY
     if (presiono) {
- ac4:	cc 23       	and	r28, r28
- ac6:	71 f0       	breq	.+28     	; 0xae4 <Handle_ESTADO_FINALIZADO+0x90>
+ aca:	cc 23       	and	r28, r28
+ acc:	71 f0       	breq	.+28     	; 0xaea <Handle_ESTADO_FINALIZADO+0x90>
         Alarm_off();
- ac8:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
+ ace:	0e 94 87 00 	call	0x10e	; 0x10e <Alarm_off>
         digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
- acc:	ed e6       	ldi	r30, 0x6D	; 109
- ace:	f1 e0       	ldi	r31, 0x01	; 1
- ad0:	13 82       	std	Z+3, r1	; 0x03
- ad2:	12 82       	std	Z+2, r1	; 0x02
- ad4:	11 82       	std	Z+1, r1	; 0x01
- ad6:	10 82       	st	Z, r1
+ ad2:	ed e6       	ldi	r30, 0x6D	; 109
+ ad4:	f1 e0       	ldi	r31, 0x01	; 1
+ ad6:	13 82       	std	Z+3, r1	; 0x03
+ ad8:	12 82       	std	Z+2, r1	; 0x02
+ ada:	11 82       	std	Z+1, r1	; 0x01
+ adc:	10 82       	st	Z, r1
         LCDclr();
- ad8:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
+ ade:	0e 94 56 02 	call	0x4ac	; 0x4ac <LCDclr>
         Mostrar_Tiempo_LCD();
- adc:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
+ ae2:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
         return ESTADO_STANDBY;
- ae0:	80 e0       	ldi	r24, 0x00	; 0
- ae2:	01 c0       	rjmp	.+2      	; 0xae6 <Handle_ESTADO_FINALIZADO+0x92>
+ ae6:	80 e0       	ldi	r24, 0x00	; 0
+ ae8:	01 c0       	rjmp	.+2      	; 0xaec <Handle_ESTADO_FINALIZADO+0x92>
     }
     
     return ESTADO_FINALIZADO;
- ae4:	85 e0       	ldi	r24, 0x05	; 5
+ aea:	85 e0       	ldi	r24, 0x05	; 5
 }
- ae6:	cf 91       	pop	r28
- ae8:	08 95       	ret
+ aec:	cf 91       	pop	r28
+ aee:	08 95       	ret
 
-00000aea <MEF_update>:
+00000af0 <MEF_update>:
 
 // Implementación de MEF_update: delega en los manejadores según estado
 EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
+    // Override global: si se presiona 'D' en cualquier estado (excepto
+    // cuando ya estamos en ESTADO_ABIERTO), ir a ESTADO_ABIERTO.
+    if (presiono && tecla == 'D' && estado_actual != ESTADO_ABIERTO) {
+ af0:	88 23       	and	r24, r24
+ af2:	41 f0       	breq	.+16     	; 0xb04 <MEF_update+0x14>
+ af4:	64 34       	cpi	r22, 0x44	; 68
+ af6:	31 f4       	brne	.+12     	; 0xb04 <MEF_update+0x14>
+ af8:	43 30       	cpi	r20, 0x03	; 3
+ afa:	21 f0       	breq	.+8      	; 0xb04 <MEF_update+0x14>
+        Abrio();
+ afc:	0e 94 39 03 	call	0x672	; 0x672 <Abrio>
+        return ESTADO_ABIERTO;
+ b00:	83 e0       	ldi	r24, 0x03	; 3
+ b02:	08 95       	ret
+    }
     switch (estado_actual) {
- aea:	42 30       	cpi	r20, 0x02	; 2
- aec:	91 f0       	breq	.+36     	; 0xb12 <MEF_update+0x28>
- aee:	28 f4       	brcc	.+10     	; 0xafa <MEF_update+0x10>
- af0:	44 23       	and	r20, r20
- af2:	49 f0       	breq	.+18     	; 0xb06 <MEF_update+0x1c>
- af4:	41 30       	cpi	r20, 0x01	; 1
- af6:	51 f0       	breq	.+20     	; 0xb0c <MEF_update+0x22>
- af8:	18 c0       	rjmp	.+48     	; 0xb2a <MEF_update+0x40>
- afa:	44 30       	cpi	r20, 0x04	; 4
- afc:	69 f0       	breq	.+26     	; 0xb18 <MEF_update+0x2e>
- afe:	78 f0       	brcs	.+30     	; 0xb1e <MEF_update+0x34>
- b00:	45 30       	cpi	r20, 0x05	; 5
- b02:	81 f0       	breq	.+32     	; 0xb24 <MEF_update+0x3a>
- b04:	12 c0       	rjmp	.+36     	; 0xb2a <MEF_update+0x40>
+ b04:	42 30       	cpi	r20, 0x02	; 2
+ b06:	91 f0       	breq	.+36     	; 0xb2c <MEF_update+0x3c>
+ b08:	28 f4       	brcc	.+10     	; 0xb14 <MEF_update+0x24>
+ b0a:	44 23       	and	r20, r20
+ b0c:	49 f0       	breq	.+18     	; 0xb20 <MEF_update+0x30>
+ b0e:	41 30       	cpi	r20, 0x01	; 1
+ b10:	51 f0       	breq	.+20     	; 0xb26 <MEF_update+0x36>
+ b12:	18 c0       	rjmp	.+48     	; 0xb44 <MEF_update+0x54>
+ b14:	44 30       	cpi	r20, 0x04	; 4
+ b16:	69 f0       	breq	.+26     	; 0xb32 <MEF_update+0x42>
+ b18:	78 f0       	brcs	.+30     	; 0xb38 <MEF_update+0x48>
+ b1a:	45 30       	cpi	r20, 0x05	; 5
+ b1c:	81 f0       	breq	.+32     	; 0xb3e <MEF_update+0x4e>
+ b1e:	12 c0       	rjmp	.+36     	; 0xb44 <MEF_update+0x54>
         case ESTADO_STANDBY:
             return Handle_ESTADO_STANDBY(presiono, tecla);
- b06:	0e 94 78 03 	call	0x6f0	; 0x6f0 <Handle_ESTADO_STANDBY>
- b0a:	08 95       	ret
+ b20:	0e 94 86 03 	call	0x70c	; 0x70c <Handle_ESTADO_STANDBY>
+ b24:	08 95       	ret
 
         case ESTADO_CONFIGURANDO:
             return Handle_ESTADO_CONFIGURANDO(presiono, tecla, estado_actual);
- b0c:	0e 94 b6 03 	call	0x76c	; 0x76c <Handle_ESTADO_CONFIGURANDO>
- b10:	08 95       	ret
+ b26:	0e 94 c4 03 	call	0x788	; 0x788 <Handle_ESTADO_CONFIGURANDO>
+ b2a:	08 95       	ret
 
         case ESTADO_COCINANDO:
             return Handle_ESTADO_COCINANDO(presiono, tecla, estado_actual);
- b12:	0e 94 65 04 	call	0x8ca	; 0x8ca <Handle_ESTADO_COCINANDO>
- b16:	08 95       	ret
+ b2c:	0e 94 73 04 	call	0x8e6	; 0x8e6 <Handle_ESTADO_COCINANDO>
+ b30:	08 95       	ret
 
         case ESTADO_PAUSADO:
             return Handle_ESTADO_PAUSADO(presiono, tecla);
- b18:	0e 94 dc 04 	call	0x9b8	; 0x9b8 <Handle_ESTADO_PAUSADO>
- b1c:	08 95       	ret
+ b32:	0e 94 df 04 	call	0x9be	; 0x9be <Handle_ESTADO_PAUSADO>
+ b36:	08 95       	ret
 
         case ESTADO_ABIERTO:
             return Handle_ESTADO_ABIERTO(presiono, tecla);
- b1e:	0e 94 15 05 	call	0xa2a	; 0xa2a <Handle_ESTADO_ABIERTO>
- b22:	08 95       	ret
+ b38:	0e 94 18 05 	call	0xa30	; 0xa30 <Handle_ESTADO_ABIERTO>
+ b3c:	08 95       	ret
 
         case ESTADO_FINALIZADO:
             return Handle_ESTADO_FINALIZADO(presiono, tecla);
- b24:	0e 94 2a 05 	call	0xa54	; 0xa54 <Handle_ESTADO_FINALIZADO>
- b28:	08 95       	ret
+ b3e:	0e 94 2d 05 	call	0xa5a	; 0xa5a <Handle_ESTADO_FINALIZADO>
+ b42:	08 95       	ret
 
         default:
             return ESTADO_STANDBY;
- b2a:	80 e0       	ldi	r24, 0x00	; 0
+ b44:	80 e0       	ldi	r24, 0x00	; 0
     }
 }
- b2c:	08 95       	ret
+ b46:	08 95       	ret
 
-00000b2e <MW_update>:
+00000b48 <MW_update>:
 
 // Envoltorio público: lee teclado y actualiza la MEF interna
 void MW_update(void) {
- b2e:	cf 93       	push	r28
- b30:	df 93       	push	r29
- b32:	1f 92       	push	r1
- b34:	cd b7       	in	r28, 0x3d	; 61
- b36:	de b7       	in	r29, 0x3e	; 62
+ b48:	cf 93       	push	r28
+ b4a:	df 93       	push	r29
+ b4c:	1f 92       	push	r1
+ b4e:	cd b7       	in	r28, 0x3d	; 61
+ b50:	de b7       	in	r29, 0x3e	; 62
     uint8_t tecla;
     uint8_t presiono = KEYPAD_Scan(&tecla);
- b38:	ce 01       	movw	r24, r28
- b3a:	01 96       	adiw	r24, 0x01	; 1
- b3c:	0e 94 0a 01 	call	0x214	; 0x214 <KEYPAD_Scan>
+ b52:	ce 01       	movw	r24, r28
+ b54:	01 96       	adiw	r24, 0x01	; 1
+ b56:	0e 94 0a 01 	call	0x214	; 0x214 <KEYPAD_Scan>
     estado_actual = MEF_update(presiono, tecla, estado_actual);
- b40:	40 91 68 01 	lds	r20, 0x0168	; 0x800168 <__data_end>
- b44:	69 81       	ldd	r22, Y+1	; 0x01
- b46:	0e 94 75 05 	call	0xaea	; 0xaea <MEF_update>
- b4a:	80 93 68 01 	sts	0x0168, r24	; 0x800168 <__data_end>
+ b5a:	40 91 68 01 	lds	r20, 0x0168	; 0x800168 <__data_end>
+ b5e:	69 81       	ldd	r22, Y+1	; 0x01
+ b60:	0e 94 78 05 	call	0xaf0	; 0xaf0 <MEF_update>
+ b64:	80 93 68 01 	sts	0x0168, r24	; 0x800168 <__data_end>
 }
- b4e:	0f 90       	pop	r0
- b50:	df 91       	pop	r29
- b52:	cf 91       	pop	r28
- b54:	08 95       	ret
+ b68:	0f 90       	pop	r0
+ b6a:	df 91       	pop	r29
+ b6c:	cf 91       	pop	r28
+ b6e:	08 95       	ret
 
-00000b56 <TIMER1_Init>:
+00000b70 <TIMER1_Init>:
 #include "timer.h"
 
 volatile uint8_t flag_un_segundo = 0;
 
 void TIMER1_Init(void) {
     TCCR1B |= (1 << WGM12);
- b56:	e1 e8       	ldi	r30, 0x81	; 129
- b58:	f0 e0       	ldi	r31, 0x00	; 0
- b5a:	80 81       	ld	r24, Z
- b5c:	88 60       	ori	r24, 0x08	; 8
- b5e:	80 83       	st	Z, r24
+ b70:	e1 e8       	ldi	r30, 0x81	; 129
+ b72:	f0 e0       	ldi	r31, 0x00	; 0
+ b74:	80 81       	ld	r24, Z
+ b76:	88 60       	ori	r24, 0x08	; 8
+ b78:	80 83       	st	Z, r24
     TCCR1B |= (1 << CS12) | (1 << CS10);
- b60:	80 81       	ld	r24, Z
- b62:	85 60       	ori	r24, 0x05	; 5
- b64:	80 83       	st	Z, r24
+ b7a:	80 81       	ld	r24, Z
+ b7c:	85 60       	ori	r24, 0x05	; 5
+ b7e:	80 83       	st	Z, r24
     OCR1A = 15624; 
- b66:	88 e0       	ldi	r24, 0x08	; 8
- b68:	9d e3       	ldi	r25, 0x3D	; 61
- b6a:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
- b6e:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
+ b80:	88 e0       	ldi	r24, 0x08	; 8
+ b82:	9d e3       	ldi	r25, 0x3D	; 61
+ b84:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
+ b88:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
     TIMSK1 |= (1 << OCIE1A);
- b72:	ef e6       	ldi	r30, 0x6F	; 111
- b74:	f0 e0       	ldi	r31, 0x00	; 0
- b76:	80 81       	ld	r24, Z
- b78:	82 60       	ori	r24, 0x02	; 2
- b7a:	80 83       	st	Z, r24
+ b8c:	ef e6       	ldi	r30, 0x6F	; 111
+ b8e:	f0 e0       	ldi	r31, 0x00	; 0
+ b90:	80 81       	ld	r24, Z
+ b92:	82 60       	ori	r24, 0x02	; 2
+ b94:	80 83       	st	Z, r24
     sei();
- b7c:	78 94       	sei
- b7e:	08 95       	ret
+ b96:	78 94       	sei
+ b98:	08 95       	ret
 
-00000b80 <__vector_11>:
+00000b9a <__vector_11>:
 }
 
 ISR(TIMER1_COMPA_vect) {
- b80:	1f 92       	push	r1
- b82:	0f 92       	push	r0
- b84:	0f b6       	in	r0, 0x3f	; 63
- b86:	0f 92       	push	r0
- b88:	11 24       	eor	r1, r1
- b8a:	8f 93       	push	r24
+ b9a:	1f 92       	push	r1
+ b9c:	0f 92       	push	r0
+ b9e:	0f b6       	in	r0, 0x3f	; 63
+ ba0:	0f 92       	push	r0
+ ba2:	11 24       	eor	r1, r1
+ ba4:	8f 93       	push	r24
     flag_un_segundo = 1; 
- b8c:	81 e0       	ldi	r24, 0x01	; 1
- b8e:	80 93 71 01 	sts	0x0171, r24	; 0x800171 <flag_un_segundo>
+ ba6:	81 e0       	ldi	r24, 0x01	; 1
+ ba8:	80 93 71 01 	sts	0x0171, r24	; 0x800171 <flag_un_segundo>
 }
- b92:	8f 91       	pop	r24
- b94:	0f 90       	pop	r0
- b96:	0f be       	out	0x3f, r0	; 63
- b98:	0f 90       	pop	r0
- b9a:	1f 90       	pop	r1
- b9c:	18 95       	reti
+ bac:	8f 91       	pop	r24
+ bae:	0f 90       	pop	r0
+ bb0:	0f be       	out	0x3f, r0	; 63
+ bb2:	0f 90       	pop	r0
+ bb4:	1f 90       	pop	r1
+ bb6:	18 95       	reti
 
-00000b9e <__umulhisi3>:
- b9e:	a2 9f       	mul	r26, r18
- ba0:	b0 01       	movw	r22, r0
- ba2:	b3 9f       	mul	r27, r19
- ba4:	c0 01       	movw	r24, r0
- ba6:	a3 9f       	mul	r26, r19
- ba8:	70 0d       	add	r23, r0
- baa:	81 1d       	adc	r24, r1
- bac:	11 24       	eor	r1, r1
- bae:	91 1d       	adc	r25, r1
- bb0:	b2 9f       	mul	r27, r18
- bb2:	70 0d       	add	r23, r0
- bb4:	81 1d       	adc	r24, r1
- bb6:	11 24       	eor	r1, r1
- bb8:	91 1d       	adc	r25, r1
- bba:	08 95       	ret
+00000bb8 <__umulhisi3>:
+ bb8:	a2 9f       	mul	r26, r18
+ bba:	b0 01       	movw	r22, r0
+ bbc:	b3 9f       	mul	r27, r19
+ bbe:	c0 01       	movw	r24, r0
+ bc0:	a3 9f       	mul	r26, r19
+ bc2:	70 0d       	add	r23, r0
+ bc4:	81 1d       	adc	r24, r1
+ bc6:	11 24       	eor	r1, r1
+ bc8:	91 1d       	adc	r25, r1
+ bca:	b2 9f       	mul	r27, r18
+ bcc:	70 0d       	add	r23, r0
+ bce:	81 1d       	adc	r24, r1
+ bd0:	11 24       	eor	r1, r1
+ bd2:	91 1d       	adc	r25, r1
+ bd4:	08 95       	ret
 
-00000bbc <_exit>:
- bbc:	f8 94       	cli
+00000bd6 <_exit>:
+ bd6:	f8 94       	cli
 
-00000bbe <__stop_program>:
- bbe:	ff cf       	rjmp	.-2      	; 0xbbe <__stop_program>
+00000bd8 <__stop_program>:
+ bd8:	ff cf       	rjmp	.-2      	; 0xbd8 <__stop_program>
