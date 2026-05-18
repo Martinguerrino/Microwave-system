@@ -5,7 +5,7 @@
  *
  * Responsabilidades:
  * - Inicializar Timer1 en modo CTC.
- * - Inicializar Timer0 para un flag periódico de 100 ms.
+ * - Inicializar Timer0 para una base periódica de 10 ms.
  * - Publicar el flag periódico de 1 segundo consumido por la MEF.
  *
  * Dependencias importantes:
@@ -23,7 +23,7 @@
 void TIMER1_Init(void);
 
 /*
- * Configura Timer0 para generar un flag periódico de 100 ms.
+ * Configura Timer0 para generar una interrupción periódica de 10 ms.
  */
 void TIMER0_Init(void);
 

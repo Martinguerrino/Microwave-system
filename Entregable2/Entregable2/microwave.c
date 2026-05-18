@@ -234,6 +234,19 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
             LCDstring((uint8_t*)"                ", 16);
             return ESTADO_PAUSADO;
         }
+        else if (tecla == 'C') {
+            /* En pausa, el atajo rápido mantiene la regla de sumar 30 segundos. */
+            total_segundos += 30;
+
+            /* Se conserva el mismo tope para no exceder el rango del diseño. */
+            if (total_segundos > MAX_SEGUNDOS) {
+                total_segundos = MAX_SEGUNDOS;
+            }
+
+            Actualizar_Digitos_Desde_Segundos();
+            Mostrar_Tiempo_LCD();
+            return ESTADO_PAUSADO;
+        }
         else if (tecla == 'B') {
             /* Cancelación explícita: borra la sesión y vuelve a reposo. */
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
