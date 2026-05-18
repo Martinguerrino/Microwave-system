@@ -10,7 +10,7 @@
  *
  * Dependencias importantes:
  * - keypad: adquisición de entrada del usuario.
- * - timer: temporización base de 1 segundo.
+ * - timer: temporización base de 1 segundo y 100 ms.
  * - display y actuators: presentación y control de hardware.
  */
 
@@ -28,9 +28,10 @@
 static void initialice(void)
 {
     /* Inicialización secuencial para dejar el sistema en un estado conocido. */
-    KEYPAD_Init();
     LCDinit();
+    KEYPAD_Init();
     TIMER1_Init();
+    TIMER0_Init();
     initActuators();
     LCDclr();
     Mostrar_Tiempo_LCD();
@@ -47,7 +48,10 @@ int main(void)
     /* Loop Principal */
     while (1)
     {
-        MW_update();
+        if (flag_cien_milisegundos) {
+            flag_cien_milisegundos = 0;
+            MW_update();
+        }
     }
 }
 
