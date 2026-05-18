@@ -1081,7 +1081,7 @@ static void initialice(void)
 
 int main(void)
 {   
-    /* Inicializaci�n de Perif�ricos */
+    /* Inicializacion de Perifericos */
     initialice();
  668:	0e 94 27 03 	call	0x64e	; 0x64e <initialice>
 
@@ -1095,7 +1095,7 @@ int main(void)
 00000672 <Abrio>:
 }
 
-// Acción al abrir la puerta (centralizada)
+// Acción al abrir la puerta
 static void Abrio(void)
 {
     Magnetron_Off();
@@ -1114,10 +1114,10 @@ static void Abrio(void)
  68c:	08 95       	ret
 
 0000068e <Actualizar_Digitos_Desde_Segundos>:
-// Estado interno de la MEF (encapsulado en este módulo)
+
 static EstadoMicroondas estado_actual = ESTADO_STANDBY;
 
-// Función auxiliar
+
 void Actualizar_Digitos_Desde_Segundos(void) {
     uint8_t min_act = total_segundos / 60;
  68e:	40 91 6b 01 	lds	r20, 0x016B	; 0x80016b <total_segundos>
@@ -1583,7 +1583,6 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         else if (tecla == 'C') {
  972:	c3 34       	cpi	r28, 0x43	; 67
  974:	c1 f4       	brne	.+48     	; 0x9a6 <__stack+0xa7>
-            // Sumar 30 segundos
             total_segundos += 30;
  976:	80 91 6b 01 	lds	r24, 0x016B	; 0x80016b <total_segundos>
  97a:	90 91 6c 01 	lds	r25, 0x016C	; 0x80016c <total_segundos+0x1>
@@ -1730,7 +1729,6 @@ EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
         if (tecla == 'D') {
  a34:	64 34       	cpi	r22, 0x44	; 68
  a36:	79 f4       	brne	.+30     	; 0xa56 <Handle_ESTADO_ABIERTO+0x26>
-            // Quitar el mensaje y pasar a configurando sin alterar el tiempo
             LCDGotoXY(0, 1);
  a38:	61 e0       	ldi	r22, 0x01	; 1
  a3a:	80 e0       	ldi	r24, 0x00	; 0
@@ -1740,7 +1738,6 @@ EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
  a42:	85 e3       	ldi	r24, 0x35	; 53
  a44:	91 e0       	ldi	r25, 0x01	; 1
  a46:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <LCDstring>
-            // Actualizar la primera línea para reflejar el tiempo actual
             Mostrar_Tiempo_LCD();
  a4a:	0e 94 98 00 	call	0x130	; 0x130 <Mostrar_Tiempo_LCD>
             return ESTADO_CONFIGURANDO;
@@ -1856,8 +1853,7 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
 
 // Implementación de MEF_update: delega en los manejadores según estado
 EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
-    // Override global: si se presiona 'D' en cualquier estado (excepto
-    // cuando ya estamos en ESTADO_ABIERTO), ir a ESTADO_ABIERTO.
+    
     if (presiono && tecla == 'D' && estado_actual != ESTADO_ABIERTO) {
  af0:	88 23       	and	r24, r24
  af2:	41 f0       	breq	.+16     	; 0xb04 <MEF_update+0x14>
