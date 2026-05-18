@@ -1,3 +1,23 @@
+/*
+ * actuators.c
+ * ---
+ * Implementa la capa de salida física del microondas.
+ *
+ * Responsabilidades:
+ * - Configurar y conmutar los pines de actuadores.
+ * - Mantener aislada la manipulación de hardware directo.
+ * - Garantizar un estado inicial seguro al arrancar.
+ *
+ * Dependencias importantes:
+ * - actuators.h: contrato público del módulo.
+ * - avr/io: acceso a DDRx y PORTx.
+ *
+ * Mapeo de hardware:
+ * - PB5 -> Magnetrón.
+ * - PC4 -> Luz interior.
+ * - PC5 -> Buzzer/alarma.
+ */
+
 #include <avr/io.h>
 #include "actuators.h"
 

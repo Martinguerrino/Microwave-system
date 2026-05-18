@@ -1,6 +1,19 @@
 /*
- * microwave.c - Manejadores de estados para Horno a Microondas
- * Materia: Circuitos Digitales y Microcontroladores (E305) - UNLP
+ * microwave.c
+ * ---
+ * Implementa la máquina de estados principal del microondas.
+ *
+ * Responsabilidades:
+ * - Interpretar eventos de teclado.
+ * - Mantener el tiempo de cocción y su representación visible.
+ * - Coordinar actuadores, LCD y alarmas según el estado.
+ * - Encapsular reglas de transición y restricciones de operación.
+ *
+ * Dependencias importantes:
+ * - actuators: magnetrón, luz interior y buzzer.
+ * - display: actualización de la visualización del tiempo.
+ * - keypad: eventos de usuario.
+ * - timer: flag de un segundo para el conteo descendente.
  */
 
 #include <avr/io.h>
@@ -24,6 +37,9 @@ uint8_t cantidad_digitos = 0;
 static EstadoMicroondas estado_actual = ESTADO_STANDBY;
 
 
+/*
+ * Convierte el tiempo total almacenado a dígitos visibles MM:SS.
+ */
 void Actualizar_Digitos_Desde_Segundos(void) {
     uint8_t min_act = total_segundos / 60;
     uint8_t seg_act = total_segundos % 60;
@@ -33,7 +49,9 @@ void Actualizar_Digitos_Desde_Segundos(void) {
     digitos[3] = seg_act % 10;
 }
 
-// Acción al abrir la puerta
+/*
+ * Lleva al sistema a un estado seguro al detectar apertura de puerta.
+ */
 static void Abrio(void)
 {
     Magnetron_Off();
@@ -42,16 +60,17 @@ static void Abrio(void)
     LCDstring((uint8_t*)"Puerta Abierta! ", 16);
 }
 
-// Manejador para ESTADO_STANDBY
+/*
+ * Maneja el estado de espera: arma una nueva cocción o inicia el modo rápido.
+ */
 EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
-    // Apagar todos los actuadores
+    /* En reposo se fuerza hardware inactivo para mantener una salida segura. */
     Magnetron_Off();
     InteriorLight_Off();
     Alarm_off();
     
     if (presiono) {
         if (tecla >= '0' && tecla <= '9') {
-            // Cambiar a ESTADO_CONFIGURANDO
             digitos[0] = 0; digitos[1] = 0; digitos[2] = 0;
             digitos[3] = tecla - '0';
             cantidad_digitos = 1; 
@@ -59,7 +78,7 @@ EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
             return ESTADO_CONFIGURANDO;
         }
         else if (tecla == 'C') {
-            // Cambiar a ESTADO_COCINANDO directamente con 30 segundos
+            /* El modo rápido evita la secuencia de configuración para uso frecuente. */
             total_segundos = 30;
             Actualizar_Digitos_Desde_Segundos();
             Mostrar_Tiempo_LCD();
@@ -73,12 +92,15 @@ EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
     return ESTADO_STANDBY;
 }
 
-// Manejador para ESTADO_CONFIGURANDO
+/*
+ * Maneja la edición del tiempo y la validación de límites antes de cocinar.
+ */
 EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
     if (presiono) {
-        // Tope de entrada de 4 teclas
+        /* Se limita a cuatro dígitos para preservar el formato MM:SS. */
         if (tecla >= '0' && tecla <= '9') {
             if (cantidad_digitos < 4) {
+                /* Desplazamiento a la izquierda para simular ingreso secuencial. */
                 digitos[0] = digitos[1];
                 digitos[1] = digitos[2];
                 digitos[2] = digitos[3];
@@ -88,7 +110,7 @@ EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, Est
             }
         }
         else if (tecla == 'B') {
-            // Volver a ESTADO_STANDBY
+            /* B actúa como cancelación explícita de la configuración. */
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
             cantidad_digitos = 0;
             Mostrar_Tiempo_LCD();
@@ -97,12 +119,12 @@ EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, Est
             return ESTADO_STANDBY;
         }
         else if (tecla == 'A') {
-            // Iniciar cocción
+            /* Se traduce el tiempo visible a segundos para el conteo interno. */
             uint8_t min = (digitos[0] * 10) + digitos[1];
             uint8_t seg = (digitos[2] * 10) + digitos[3];
             total_segundos = (min * 60) + seg;
             
-            // APLICAMOS EL TECHO MATEMÁTICO AL INICIAR
+            /* El techo evita desbordes y mantiene el rango operativo previsto. */
             if (total_segundos > MAX_SEGUNDOS) {
                 total_segundos = MAX_SEGUNDOS; 
             }
@@ -120,12 +142,12 @@ EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, Est
             }
         }
         else if (tecla == 'C') {
-            // Sumar 30 segundos sin dejar configurando
+            /* Incremento rápido para ajustes pequeños sin abandonar la edición. */
             uint8_t min = (digitos[0] * 10) + digitos[1];
             uint8_t seg = (digitos[2] * 10) + digitos[3];
             total_segundos = (min * 60) + seg + 30;
             
-            // APLICAMOS EL TECHO MATEMÁTICO EN EL +30
+            /* El mismo límite se aplica aquí para conservar coherencia funcional. */
             if (total_segundos > MAX_SEGUNDOS) {
                 total_segundos = MAX_SEGUNDOS;
             }
@@ -137,9 +159,11 @@ EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, Est
     return ESTADO_CONFIGURANDO;
 }
 
-// Manejador para ESTADO_COCINANDO
+/*
+ * Maneja la cocción activa y los eventos permitidos durante el conteo.
+ */
 EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
-    // Manejo del decremento de tiempo
+    /* El flag de 1 segundo desacopla el tiempo del bucle principal. */
     if (flag_un_segundo) {
         flag_un_segundo = 0;
         if (total_segundos > 0) {
@@ -149,6 +173,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         }
         
         if (total_segundos == 0) {
+            /* Al terminar se apagan salidas y se entra en una fase de aviso. */
             Magnetron_Off();
             InteriorLight_Off();
             Alarm_On();
@@ -161,10 +186,10 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
 
     }
     
-    // Manejo de teclas durante cocción
+    /* Solo se aceptan acciones que preservan la seguridad y la continuidad. */
     if (presiono) {
         if (tecla == 'B') {
-            // Pausar
+            /* La pausa conserva el tiempo restante y corta la potencia. */
             Magnetron_Off();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Pausado...      ", 16);
@@ -173,7 +198,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         else if (tecla == 'C') {
             total_segundos += 30;
             
-            // APLICAMOS EL TECHO MATEMÁTICO AL SUMAR TIEMPO EN CALIENTE
+            /* La misma cota evita que el modo rápido supere el rango del diseño. */
             if (total_segundos > MAX_SEGUNDOS) {
                 total_segundos = MAX_SEGUNDOS;
             }
@@ -182,7 +207,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
             Mostrar_Tiempo_LCD();
         }
         else if (tecla == 'D') {
-            // Abrir puerta -> mostrar mensaje y pasar a ESTADO_ABIERTO
+            /* Abrir la puerta obliga a inhibir cocción y declarar la condición. */
             Abrio();
             return ESTADO_ABIERTO;
         }
@@ -190,11 +215,13 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
     return ESTADO_COCINANDO;
 }
 
-// Manejador para ESTADO_PAUSADO
+/*
+ * Maneja la cocción suspendida sin perder el tiempo acumulado.
+ */
 EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
     if (presiono) {
         if (tecla == 'A') {
-            // Reanudar cocción
+            /* Reanudar vuelve a habilitar salidas y mantiene el tiempo restante. */
             Magnetron_On();
             InteriorLight_On();
             LCDGotoXY(0, 1);
@@ -202,13 +229,13 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
             return ESTADO_COCINANDO;
         } 
         else if (tecla == 'D') {
-            // Cerrar puerta: quitar el letrero de puerta abierta
+            /* Si la puerta se cierra, solo se limpia el mensaje sin asumir cocción. */
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"                ", 16);
             return ESTADO_PAUSADO;
         }
         else if (tecla == 'B') {
-            // Volver a ESTADO_STANDBY
+            /* Cancelación explícita: borra la sesión y vuelve a reposo. */
             digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
             Mostrar_Tiempo_LCD();
             LCDGotoXY(0, 1);
@@ -219,9 +246,11 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
     return ESTADO_PAUSADO;
 }
 
-// Manejador para ESTADO_ABIERTO
+/*
+ * Mantiene el sistema inhibido mientras la puerta permanece abierta.
+ */
 EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
-    // Mantener la primera línea (tiempo) y mostrar "Puerta Abierta!" en la segunda
+    /* Se conserva el tiempo visible para no perder contexto del usuario. */
     if (presiono) {
         if (tecla == 'D') {
             LCDGotoXY(0, 1);
@@ -233,9 +262,11 @@ EstadoMicroondas Handle_ESTADO_ABIERTO(uint8_t presiono, uint8_t tecla) {
     return ESTADO_ABIERTO;
 }
 
-// Manejador para ESTADO_FINALIZADO
+/*
+ * Ejecuta el patrón de finalización y espera confirmación del usuario.
+ */
 EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
-    // Parpadeo de finalización
+    /* El parpadeo marca el fin del ciclo sin bloquear el lazo principal. */
     if (flag_un_segundo) {
         flag_un_segundo = 0;
         contador_finalizado++;
@@ -259,7 +290,7 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
         }
     }
 
-    // Cualquier tecla presionada vuelve a STANDBY
+    /* Cualquier interacción descarta la alarma y limpia el estado final. */
     if (presiono) {
         Alarm_off();
         digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
@@ -271,7 +302,9 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
     return ESTADO_FINALIZADO;
 }
 
-// Implementación de MEF_update: delega en los manejadores según estado
+/*
+ * Despacha la lógica de estado sin mezclar la selección con la implementación.
+ */
 EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
     
     if (presiono && tecla == 'D' && estado_actual != ESTADO_ABIERTO) {
@@ -302,7 +335,9 @@ EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas es
     }
 }
 
-// Envoltorio público: lee teclado y actualiza la MEF interna
+/*
+ * Lee el teclado y actualiza la MEF interna que gobierna el sistema.
+ */
 void MW_update(void) {
     uint8_t tecla;
     uint8_t presiono = KEYPAD_Scan(&tecla);
