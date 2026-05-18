@@ -143,6 +143,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
             LCDstring((uint8_t*)"Fin Coccion!    ", 16);
             return ESTADO_FINALIZADO;
         }
+
     }
     
     // Manejo de teclas durante cocción
@@ -237,4 +238,27 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
     }
     
     return ESTADO_FINALIZADO;
+}
+
+// Implementación de MEF_update: delega en los manejadores según estado
+EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual) {
+    switch (estado_actual) {
+        case ESTADO_STANDBY:
+            return Handle_ESTADO_STANDBY(presiono, tecla);
+
+        case ESTADO_CONFIGURANDO:
+            return Handle_ESTADO_CONFIGURANDO(presiono, tecla, estado_actual);
+
+        case ESTADO_COCINANDO:
+            return Handle_ESTADO_COCINANDO(presiono, tecla, estado_actual);
+
+        case ESTADO_PAUSADO:
+            return Handle_ESTADO_PAUSADO(presiono, tecla);
+
+        case ESTADO_FINALIZADO:
+            return Handle_ESTADO_FINALIZADO(presiono, tecla);
+
+        default:
+            return ESTADO_STANDBY;
+    }
 }

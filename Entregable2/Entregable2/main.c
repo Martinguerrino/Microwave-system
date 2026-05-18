@@ -9,6 +9,7 @@
 #include "keypad.h"
 #include "microwave.h"
 #include "timer.h"
+#include "display.h"
 #include <util/delay.h>
 
 // El techo matem�tico m�ximo: 99 minutos y 59 segundos
@@ -27,7 +28,6 @@ uint8_t cantidad_digitos = 0;
 
 
 
-// Descompone los segundos totales asegurando que nunca rompan el formato MM:SS
 
 int main(void)
 {   
@@ -53,28 +53,7 @@ int main(void)
 	    uint8_t tecla;
 	    uint8_t presiono = KEYPAD_Scan(&tecla);
 	    
-        switch (estado_actual) {
-            
-            case ESTADO_STANDBY:
-                    estado_actual = Handle_ESTADO_STANDBY(presiono, tecla);
-                break;
-
-            case ESTADO_CONFIGURANDO:
-                    estado_actual = Handle_ESTADO_CONFIGURANDO(presiono, tecla, estado_actual);
-                break;
-
-            case ESTADO_COCINANDO:
-                    estado_actual = Handle_ESTADO_COCINANDO(presiono, tecla, estado_actual);
-                break;
-
-            case ESTADO_PAUSADO:
-                    estado_actual = Handle_ESTADO_PAUSADO(presiono, tecla);
-                break;
-
-            case ESTADO_FINALIZADO:
-                    estado_actual = Handle_ESTADO_FINALIZADO(presiono, tecla);
-                break;
-        }
+        estado_actual = MEF_update(presiono, tecla, estado_actual);
     }
 }
 
