@@ -3,6 +3,8 @@
 #include <avr/interrupt.h>
 #include "timer.h"
 
+volatile uint8_t flag_un_segundo = 0;
+
 void TIMER1_Init(void) {
     TCCR1B |= (1 << WGM12);
     TCCR1B |= (1 << CS12) | (1 << CS10);

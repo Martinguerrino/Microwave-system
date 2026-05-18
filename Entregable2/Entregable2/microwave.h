@@ -21,7 +21,9 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla);
 
 // Función auxiliar para actualizar dígitos desde segundos
 void Actualizar_Digitos_Desde_Segundos(void);
-// Actualiza la MEF y devuelve el nuevo estado
+// MEF pura: toma entrada y estado, devuelve nuevo estado
 EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas estado_actual);
+// Envoltorio público: lee teclado y actualiza la MEF interna
+void MW_update(void);
 
 #endif

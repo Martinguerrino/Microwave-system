@@ -7,16 +7,20 @@
 #include "microwave.h"
 #include "lcd.h"
 #include "display.h"
+#include "keypad.h"
+#include "timer.h"
 
 #define MAX_SEGUNDOS 5999
 
-// Variables globales (externs declaradas en main.c)
-extern uint8_t digitos[4];
-extern uint16_t total_segundos;
-extern volatile uint8_t flag_un_segundo;
-extern uint8_t contador_finalizado;
-extern uint8_t visible_finalizado;
-extern uint8_t cantidad_digitos;
+// Variables de estado (definidas aquí, ya no en main.c)
+uint8_t digitos[4] = {0, 0, 0, 0};
+uint16_t total_segundos = 0;
+uint8_t contador_finalizado = 0;
+uint8_t visible_finalizado = 1;
+uint8_t cantidad_digitos = 0;
+
+// Estado interno de la MEF (encapsulado en este módulo)
+static EstadoMicroondas estado_actual = ESTADO_STANDBY;
 
 // Función auxiliar
 void Actualizar_Digitos_Desde_Segundos(void) {
@@ -261,4 +265,11 @@ EstadoMicroondas MEF_update(uint8_t presiono, uint8_t tecla, EstadoMicroondas es
         default:
             return ESTADO_STANDBY;
     }
+}
+
+// Envoltorio público: lee teclado y actualiza la MEF interna
+void MW_update(void) {
+    uint8_t tecla;
+    uint8_t presiono = KEYPAD_Scan(&tecla);
+    estado_actual = MEF_update(presiono, tecla, estado_actual);
 }
