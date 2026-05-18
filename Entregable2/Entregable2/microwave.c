@@ -5,6 +5,7 @@
 
 #include <avr/io.h>
 #include "microwave.h"
+#include "actuators.h"
 #include "lcd.h"
 #include "display.h"
 #include "keypad.h"
@@ -35,8 +36,9 @@ void Actualizar_Digitos_Desde_Segundos(void) {
 // Manejador para ESTADO_STANDBY
 EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
     // Apagar todos los actuadores
-    PORTB &= ~(1<<PB5);
-    PORTC &= ~((1<<PC4) | (1<<PC5));
+    Magnetron_Off();
+    InteriorLight_Off();
+    Alarm_off();
     
     if (presiono) {
         if (tecla >= '0' && tecla <= '9') {
@@ -54,8 +56,8 @@ EstadoMicroondas Handle_ESTADO_STANDBY(uint8_t presiono, uint8_t tecla) {
             Mostrar_Tiempo_LCD();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Cocinando...    ", 16);
-            PORTB |= (1<<PB5); 
-            PORTC |= (1<<PC4); 
+            Magnetron_On();
+            InteriorLight_On();
             return ESTADO_COCINANDO;
         }
     }
@@ -103,8 +105,8 @@ EstadoMicroondas Handle_ESTADO_CONFIGURANDO(uint8_t presiono, uint8_t tecla, Est
                 
                 LCDGotoXY(0, 1);
                 LCDstring((uint8_t*)"Cocinando...    ", 16);
-                PORTB |= (1<<PB5); 
-                PORTC |= (1<<PC4); 
+                Magnetron_On();
+                InteriorLight_On();
                 return ESTADO_COCINANDO;
             }
         }
@@ -138,9 +140,9 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         }
         
         if (total_segundos == 0) {
-            PORTB &= ~(1<<PB5); 
-            PORTC &= ~(1<<PC4); 
-            PORTC |= (1<<PC5);  
+            Magnetron_Off();
+            InteriorLight_Off();
+            Alarm_On();
             contador_finalizado = 0;
             visible_finalizado = 1;
             LCDGotoXY(0, 1);
@@ -154,7 +156,7 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
     if (presiono) {
         if (tecla == 'B') {
             // Pausar
-            PORTB &= ~(1<<PB5); 
+            Magnetron_Off();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Pausado...      ", 16);
             return ESTADO_PAUSADO;
@@ -173,8 +175,8 @@ EstadoMicroondas Handle_ESTADO_COCINANDO(uint8_t presiono, uint8_t tecla, Estado
         }
         else if (tecla == 'D') {
             // Abrir puerta
-            PORTB &= ~(1<<PB5); 
-            PORTC &= ~(1<<PC4); 
+            Magnetron_Off();
+            InteriorLight_Off();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Puerta Abierta! ", 16);
             return ESTADO_PAUSADO;
@@ -188,8 +190,8 @@ EstadoMicroondas Handle_ESTADO_PAUSADO(uint8_t presiono, uint8_t tecla) {
     if (presiono) {
         if (tecla == 'A') {
             // Reanudar cocción
-            PORTB |= (1<<PB5); 
-            PORTC |= (1<<PC4); 
+            Magnetron_On();
+            InteriorLight_On();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Cocinando...    ", 16);
             return ESTADO_COCINANDO;
@@ -218,10 +220,10 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
             Mostrar_Tiempo_LCD();
             LCDGotoXY(0, 1);
             LCDstring((uint8_t*)"Fin Coccion!    ", 16);
-            PORTC |= (1<<PC5);  
+            Alarm_On();
         } else {
             LCDclr();           
-            PORTC &= ~(1<<PC5); 
+            Alarm_off();
         }
         
         if (contador_finalizado >= 5) {
@@ -234,7 +236,7 @@ EstadoMicroondas Handle_ESTADO_FINALIZADO(uint8_t presiono, uint8_t tecla) {
 
     // Cualquier tecla presionada vuelve a STANDBY
     if (presiono) {
-        PORTC &= ~(1<<PC5);
+        Alarm_off();
         digitos[0] = digitos[1] = digitos[2] = digitos[3] = 0;
         LCDclr();
         Mostrar_Tiempo_LCD();
