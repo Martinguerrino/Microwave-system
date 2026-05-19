@@ -55,6 +55,7 @@ void Actualizar_Digitos_Desde_Segundos(void) {
 static void Abrio(void)
 {
     Magnetron_Off();
+    Alarm_off();
     InteriorLight_Off();
     LCDGotoXY(0, 1);
     LCDstring((uint8_t*)"Puerta Abierta! ", 16);
